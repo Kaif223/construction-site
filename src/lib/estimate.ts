@@ -2,50 +2,60 @@
  * Preliminary construction budget calculator.
  *
  * Pure functions only — no React, no path aliases — so the logic can be unit
- * tested with Node's built-in test runner and reused on the server later.
+ * tested with Node's built-in test runner and reused on the server.
+ *
+ * Rates come from a per-market RateTable (src/data/rates). A missing rate is
+ * never filled in: the result is `kind: "no-rates"` and the UI offers a
+ * quotation instead of a number. Labels are not stored here; the UI looks
+ * them up by id in the active language's dictionary.
  */
 
-export const SQFT_TO_SQM = 0.09290304;
+export const SQFT_PER_SQM = 10.763910416709722;
 
 export type Range = readonly [low: number, high: number];
 export type AreaUnit = "sqm" | "sqft";
+export type FinishLevel = "essential" | "standard" | "premium" | "luxury";
 
-export type ProjectTypeOption = {
+export const finishLevels: FinishLevel[] = ["essential", "standard", "premium", "luxury"];
+
+export type RateAddOn = {
   id: string;
-  label: string;
-  description: string;
-  /** Example cost per square metre at "standard" finish for new construction. */
-  ratePerSqm: Range;
-  maxFloors: number;
-  included: string[];
-};
-
-export type Multiplier = { id: string; label: string; description: string; factor: number };
-
-export type AddOn = {
-  id: string;
-  label: string;
-  description: string;
+  group: "specialist" | "materials" | "site";
 } & (
-  | { kind: "perArea"; ratePerSqm: Range }
+  | { kind: "perArea"; rate: Range }
   | { kind: "lumpSum"; amount: Range }
   | { kind: "percent"; percent: Range }
 );
 
-export type EstimatorConfig = {
-  currency: { code: string; locale: string };
-  /** Shown beside every figure so nobody mistakes them for quotes. */
-  rateDisclaimer: string;
-  area: { minSqm: number; maxSqm: number };
-  /** Extra cost per floor above the first (structure, access, lifting). */
+export type RateTable = {
+  id: string;
+  market: string;
+  currency: string;
+  /** "example" figures are illustrative and must never be presented as prices. */
+  status: "example" | "verified";
+  /** ISO date the rates were last reviewed; null when never reviewed. */
+  reviewedOn: string | null;
+  source: string | null;
+  /** The area unit that per-area rates are expressed in. */
+  unit: AreaUnit;
+  taxIncluded: boolean;
+  includes: { design: boolean; permits: boolean; materials: boolean; specialistServices: boolean };
+  /** Accepted total covered area, in square metres. */
+  areaSqm: { min: number; max: number };
   perAdditionalFloor: number;
   roundTo: number;
-  projectTypes: ProjectTypeOption[];
-  workTypes: (Multiplier & { includedOverride?: string[] })[];
-  finishLevels: Multiplier[];
-  markets: Multiplier[];
-  specialistServices: AddOn[];
-  additionalRequirements: AddOn[];
+  projectTypes: {
+    id: string;
+    maxFloors: number;
+    /** Rates per `unit` for each finish level. A missing level has no rate. */
+    rates: Partial<Record<FinishLevel, Range>>;
+    included: string[];
+  }[];
+  workTypes: { id: string; factor: number; included?: string[] }[];
+  addOns: RateAddOn[];
+  /** Optional location adjustments. Absent regions are not adjusted. */
+  regionFactors: Record<string, number>;
+  assumptions: string[];
   exclusions: string[];
 };
 
@@ -55,17 +65,30 @@ export type EstimateInput = {
   unit: AreaUnit;
   floors: number | null;
   workType: string;
-  finishLevel: string;
-  market: string;
-  specialistServices: string[];
-  additionalRequirements: string[];
+  finishLevel: FinishLevel;
+  region: string | null;
+  addOns: string[];
 };
 
-export type EstimateErrors = Partial<Record<keyof EstimateInput, string>>;
+export type EstimateErrorCode =
+  | "required"
+  | "invalid"
+  | "areaMin"
+  | "areaMax"
+  | "floorsWhole"
+  | "floorsMax";
 
-export type EstimateLine = { label: string; low: number; high: number };
+export type EstimateError = { code: EstimateErrorCode; values?: Record<string, number | string> };
+export type EstimateErrors = Partial<Record<keyof EstimateInput, EstimateError>>;
+
+export type EstimateLine = { id: string; low: number; high: number };
 
 export type EstimateResult = {
+  kind: "estimate";
+  status: RateTable["status"];
+  reviewedOn: string | null;
+  currency: string;
+  taxIncluded: boolean;
   areaSqm: number;
   areaSqft: number;
   low: number;
@@ -73,17 +96,24 @@ export type EstimateResult = {
   lines: EstimateLine[];
   included: string[];
   exclusions: string[];
+  assumptions: string[];
+  includes: RateTable["includes"];
 };
 
+export type EstimateOutcome =
+  | { ok: false; errors: EstimateErrors }
+  | { ok: true; result: EstimateResult }
+  | { ok: true; result: { kind: "no-rates"; projectType: string; finishLevel: FinishLevel } };
+
 export function toSquareMetres(area: number, unit: AreaUnit) {
-  return unit === "sqft" ? area * SQFT_TO_SQM : area;
+  return unit === "sqft" ? area / SQFT_PER_SQM : area;
 }
 
 export function fromSquareMetres(areaSqm: number, unit: AreaUnit) {
-  return unit === "sqft" ? areaSqm / SQFT_TO_SQM : areaSqm;
+  return unit === "sqft" ? areaSqm * SQFT_PER_SQM : areaSqm;
 }
 
-/** Converts an entered area to the other unit, keeping a sensible precision. */
+/** Converts an entered area to another unit, rounded to a whole number. */
 export function convertArea(area: number, from: AreaUnit, to: AreaUnit) {
   if (from === to) return area;
   return Math.round(fromSquareMetres(toSquareMetres(area, from), to));
@@ -91,36 +121,34 @@ export function convertArea(area: number, from: AreaUnit, to: AreaUnit) {
 
 export function validateEstimateInput(
   input: EstimateInput,
-  config: EstimatorConfig,
+  table: RateTable,
+  regionIds: string[] = [],
 ): EstimateErrors {
   const errors: EstimateErrors = {};
-  const projectType = config.projectTypes.find((type) => type.id === input.projectType);
+  const projectType = table.projectTypes.find((type) => type.id === input.projectType);
 
-  if (!projectType) errors.projectType = "Choose a project type.";
-  if (!config.workTypes.some((type) => type.id === input.workType))
-    errors.workType = "Choose new construction or renovation.";
-  if (!config.finishLevels.some((level) => level.id === input.finishLevel))
-    errors.finishLevel = "Choose a finishing level.";
-  if (!config.markets.some((market) => market.id === input.market))
-    errors.market = "Choose a market.";
+  if (!projectType) errors.projectType = { code: "required" };
+  if (!table.workTypes.some((type) => type.id === input.workType)) errors.workType = { code: "required" };
+  if (!finishLevels.includes(input.finishLevel)) errors.finishLevel = { code: "required" };
+  if (input.region !== null && !regionIds.includes(input.region)) errors.region = { code: "invalid" };
+  if (input.addOns.some((id) => !table.addOns.some((addOn) => addOn.id === id))) errors.addOns = { code: "invalid" };
 
   if (input.area === null || !Number.isFinite(input.area)) {
-    errors.area = "Enter the approximate covered area.";
+    errors.area = { code: "required" };
   } else {
     const sqm = toSquareMetres(input.area, input.unit);
-    const min = Math.ceil(fromSquareMetres(config.area.minSqm, input.unit));
-    const max = Math.floor(fromSquareMetres(config.area.maxSqm, input.unit));
-    const unitLabel = input.unit === "sqm" ? "m²" : "ft²";
-    if (sqm < config.area.minSqm) errors.area = `Enter at least ${min.toLocaleString("en")} ${unitLabel}.`;
-    else if (sqm > config.area.maxSqm)
-      errors.area = `For areas above ${max.toLocaleString("en")} ${unitLabel}, please request a detailed quotation.`;
+    if (sqm < table.areaSqm.min) {
+      errors.area = { code: "areaMin", values: { min: Math.ceil(fromSquareMetres(table.areaSqm.min, input.unit)) } };
+    } else if (sqm > table.areaSqm.max) {
+      errors.area = { code: "areaMax", values: { max: Math.floor(fromSquareMetres(table.areaSqm.max, input.unit)) } };
+    }
   }
 
   const maxFloors = projectType?.maxFloors ?? 1;
   if (input.floors === null || !Number.isInteger(input.floors) || input.floors < 1) {
-    errors.floors = "Enter a whole number of floors (1 or more).";
+    errors.floors = { code: "floorsWhole" };
   } else if (input.floors > maxFloors) {
-    errors.floors = `This estimator supports up to ${maxFloors} floors for this project type.`;
+    errors.floors = { code: "floorsMax", values: { max: maxFloors } };
   }
 
   return errors;
@@ -130,80 +158,80 @@ function roundTo(value: number, step: number) {
   return Math.round(value / step) * step;
 }
 
-export function calculateEstimate(
-  input: EstimateInput,
-  config: EstimatorConfig,
-): { ok: true; result: EstimateResult } | { ok: false; errors: EstimateErrors } {
-  const errors = validateEstimateInput(input, config);
+export function calculateEstimate(input: EstimateInput, table: RateTable, regionIds: string[] = []): EstimateOutcome {
+  const errors = validateEstimateInput(input, table, regionIds);
   if (Object.keys(errors).length > 0) return { ok: false, errors };
 
   // Validation guarantees these lookups succeed.
-  const projectType = config.projectTypes.find((type) => type.id === input.projectType)!;
-  const workType = config.workTypes.find((type) => type.id === input.workType)!;
-  const finish = config.finishLevels.find((level) => level.id === input.finishLevel)!;
-  const market = config.markets.find((item) => item.id === input.market)!;
-
-  const areaSqm = toSquareMetres(input.area!, input.unit);
-  const floorFactor = 1 + config.perAdditionalFloor * (input.floors! - 1);
-  const factor = workType.factor * finish.factor * market.factor * floorFactor;
-
-  const baseLow = projectType.ratePerSqm[0] * areaSqm * factor;
-  const baseHigh = projectType.ratePerSqm[1] * areaSqm * factor;
-
-  const lines: EstimateLine[] = [
-    { label: `${projectType.label} — ${workType.label.toLowerCase()}`, low: baseLow, high: baseHigh },
-  ];
-
-  const addOns = [
-    ...config.specialistServices.filter((addOn) => input.specialistServices.includes(addOn.id)),
-    ...config.additionalRequirements.filter((addOn) =>
-      input.additionalRequirements.includes(addOn.id),
-    ),
-  ];
-
-  for (const addOn of addOns) {
-    let low: number;
-    let high: number;
-    if (addOn.kind === "perArea") {
-      low = addOn.ratePerSqm[0] * areaSqm * market.factor;
-      high = addOn.ratePerSqm[1] * areaSqm * market.factor;
-    } else if (addOn.kind === "lumpSum") {
-      low = addOn.amount[0] * market.factor;
-      high = addOn.amount[1] * market.factor;
-    } else {
-      low = baseLow * addOn.percent[0];
-      high = baseHigh * addOn.percent[1];
-    }
-    lines.push({ label: addOn.label, low, high });
+  const projectType = table.projectTypes.find((type) => type.id === input.projectType)!;
+  const workType = table.workTypes.find((type) => type.id === input.workType)!;
+  const rate = projectType.rates[input.finishLevel];
+  if (!rate) {
+    return { ok: true, result: { kind: "no-rates", projectType: projectType.id, finishLevel: input.finishLevel } };
   }
 
-  const roundedLines = lines.map((line) => ({
+  const areaSqm = toSquareMetres(input.area!, input.unit);
+  const areaInRateUnit = fromSquareMetres(areaSqm, table.unit);
+  const regionFactor = (input.region && table.regionFactors[input.region]) || 1;
+  const floorFactor = 1 + table.perAdditionalFloor * (input.floors! - 1);
+  const factor = workType.factor * floorFactor * regionFactor;
+
+  const baseLow = rate[0] * areaInRateUnit * factor;
+  const baseHigh = rate[1] * areaInRateUnit * factor;
+  const lines: EstimateLine[] = [{ id: "base", low: baseLow, high: baseHigh }];
+
+  const selected = table.addOns.filter((addOn) => input.addOns.includes(addOn.id));
+  for (const addOn of selected) {
+    if (addOn.kind === "perArea") {
+      lines.push({
+        id: addOn.id,
+        low: addOn.rate[0] * areaInRateUnit * regionFactor,
+        high: addOn.rate[1] * areaInRateUnit * regionFactor,
+      });
+    } else if (addOn.kind === "lumpSum") {
+      lines.push({ id: addOn.id, low: addOn.amount[0] * regionFactor, high: addOn.amount[1] * regionFactor });
+    } else {
+      lines.push({ id: addOn.id, low: baseLow * addOn.percent[0], high: baseHigh * addOn.percent[1] });
+    }
+  }
+
+  const rounded = lines.map((line) => ({
     ...line,
-    low: roundTo(line.low, config.roundTo),
-    high: roundTo(line.high, config.roundTo),
+    low: roundTo(line.low, table.roundTo),
+    high: roundTo(line.high, table.roundTo),
   }));
 
   return {
     ok: true,
     result: {
+      kind: "estimate",
+      status: table.status,
+      reviewedOn: table.reviewedOn,
+      currency: table.currency,
+      taxIncluded: table.taxIncluded,
       areaSqm,
-      areaSqft: areaSqm / SQFT_TO_SQM,
-      low: roundedLines.reduce((sum, line) => sum + line.low, 0),
-      high: roundedLines.reduce((sum, line) => sum + line.high, 0),
-      lines: roundedLines,
-      included: [
-        ...(workType.includedOverride ?? projectType.included),
-        ...addOns.map((addOn) => addOn.label),
-      ],
-      exclusions: config.exclusions,
+      areaSqft: fromSquareMetres(areaSqm, "sqft"),
+      low: rounded.reduce((sum, line) => sum + line.low, 0),
+      high: rounded.reduce((sum, line) => sum + line.high, 0),
+      lines: rounded,
+      included: [...(workType.included ?? projectType.included), ...selected.map((addOn) => addOn.id)],
+      exclusions: table.exclusions,
+      assumptions: table.assumptions,
+      includes: table.includes,
     },
   };
 }
 
-export function formatMoney(value: number, currency: EstimatorConfig["currency"]) {
-  return new Intl.NumberFormat(currency.locale, {
+/** Locale-aware currency formatting, e.g. "AED 250,000" or "‏250,000 د.إ.‏". */
+export function formatMoney(value: number, currency: string, localeTag: string, fractionDigits = 0) {
+  return new Intl.NumberFormat(localeTag, {
     style: "currency",
-    currency: currency.code,
-    maximumFractionDigits: 0,
+    currency,
+    maximumFractionDigits: fractionDigits,
+    minimumFractionDigits: fractionDigits,
   }).format(value);
+}
+
+export function formatNumber(value: number, localeTag: string, fractionDigits = 0) {
+  return new Intl.NumberFormat(localeTag, { maximumFractionDigits: fractionDigits }).format(value);
 }

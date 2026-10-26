@@ -1,32 +1,29 @@
 import Image from "next/image";
+import { getI18n } from "@/i18n/server";
 import { serviceCategories, totalServiceCount } from "@/data/services";
 import { SectionLabel, SplitHeading, TextLink } from "@/components/ui/primitives";
 
-const facts = [
-  { value: String(serviceCategories.length).padStart(2, "0"), label: "Service disciplines" },
-  { value: String(totalServiceCount), label: "Individual services" },
-  { value: "01", label: "Point of contact" },
-];
+export async function BrandIntro() {
+  const { dict, href } = await getI18n();
+  const t = dict.home.intro;
+  const facts = [
+    { value: String(serviceCategories.length).padStart(2, "0"), label: t.facts.disciplines },
+    { value: String(totalServiceCount), label: t.facts.services },
+    { value: "01", label: t.facts.contact },
+  ];
 
-export function BrandIntro() {
   return (
     <section id="introduction" aria-labelledby="intro-title" className="relative bg-ivory py-24 md:py-36">
       <div className="container-x">
-        <SectionLabel number="01">Our philosophy</SectionLabel>
+        <SectionLabel number="01">{t.label}</SectionLabel>
         <div className="mt-10 grid gap-14 lg:grid-cols-12 lg:gap-10">
-          <SplitHeading
-            id="intro-title"
-            lines={["Every Detail Matters.", <em key="e">Every Structure</em>, "Tells a Story."]}
-            className="display-xl lg:col-span-8"
-          />
+          <SplitHeading id="intro-title" lines={t.lines} emphasis={[1]} className="display-xl lg:col-span-8" />
           <div className="self-end lg:col-span-4 lg:pb-3">
             <p className="lede text-ink-muted" data-reveal="up">
-              We believe a building should be understood before it is built. That is why architecture,
-              engineering, construction and finishing sit in one team at CONSTRUKT — so every decision is made
-              with the whole building in view.
+              {t.copy}
             </p>
-            <TextLink href="/about" className="mt-8">
-              Our approach
+            <TextLink href={href("/about")} className="mt-8">
+              {t.link}
             </TextLink>
           </div>
         </div>
@@ -36,22 +33,21 @@ export function BrandIntro() {
             <div data-reveal="mask" className="relative aspect-[4/3] overflow-hidden bg-ivory-deep">
               <Image
                 src="/images/brand/architect-drawing.jpg"
-                alt="An architect drawing on a printed plan with a scale ruler and rolled drawings"
+                alt={t.imageAlt}
                 fill
                 sizes="(min-width: 768px) 58vw, 100vw"
                 className="object-cover"
               />
             </div>
             <figcaption className="eyebrow mt-4 flex flex-wrap justify-between gap-x-6 gap-y-1 text-ink-muted">
-              <span>Fig. 02 — Drawing review</span>
-              <span>Planning &amp; design</span>
+              <span>{t.caption[0]}</span>
+              <span>{t.caption[1]}</span>
             </figcaption>
           </figure>
 
           <div className="flex flex-col justify-between gap-12 md:col-span-4 md:col-start-9">
             <p className="text-[1.0625rem] leading-relaxed" data-reveal="up">
-              Whether you are building a family home, transforming a kitchen or delivering a commercial building,
-              you work with one coordinated team — from the first site survey to the final coat of paint.
+              {t.body}
             </p>
             <dl className="divide-y divide-line border-y border-line" data-reveal="stagger">
               {facts.map((fact) => (

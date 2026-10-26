@@ -181,7 +181,7 @@ export type Material = {
   description: string;
   uses: string[];
   care: string;
-  application: "Interior" | "Exterior" | "Interior & exterior";
+  application: "interior" | "exterior" | "both";
   image: string;
   imageAlt: string;
 };
@@ -195,7 +195,7 @@ export const materials: Material[] = [
       "Metamorphic stone prized for its veining. Each slab is unique, so we dry-lay and approve layouts before installation.",
     uses: ["Floors", "Vanities", "Feature walls", "Stair treads"],
     care: "Seal after installation; clean with pH-neutral products.",
-    application: "Interior",
+    application: "interior",
     image: "/images/materials/marble.jpg",
     imageAlt: "White marble with dramatic charcoal veining",
   },
@@ -207,7 +207,7 @@ export const materials: Material[] = [
       "Dense igneous stone with excellent resistance to heat, scratches and wear — ideal where surfaces work hard.",
     uses: ["Kitchen worktops", "Thresholds", "Stairs", "External paving"],
     care: "Very durable; periodic sealing depending on finish.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/granite.jpg",
     imageAlt: "Speckled grey, black and white granite surface",
   },
@@ -219,7 +219,7 @@ export const materials: Material[] = [
       "Versatile glazed tiles in countless colours and formats, well suited to walls, splashbacks and mosaics.",
     uses: ["Bathroom walls", "Splashbacks", "Mosaics", "Feature tiling"],
     care: "Easy to clean; maintain grout lines.",
-    application: "Interior",
+    application: "interior",
     image: "/images/materials/ceramic.jpg",
     imageAlt: "White broken-tile mosaic with terracotta grout lines",
   },
@@ -231,7 +231,7 @@ export const materials: Material[] = [
       "Dense, low-absorption tile available in large formats and convincing stone, concrete and timber looks.",
     uses: ["Floors", "Wet rooms", "Terraces", "Large-format walls"],
     care: "Highly stain-resistant; choose slip ratings by location.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/porcelain.jpg",
     imageAlt: "A dark porcelain-tiled bathroom with a freestanding bath",
   },
@@ -243,7 +243,7 @@ export const materials: Material[] = [
       "Engineered and solid timber bring warmth to floors, joinery and ceilings. Moisture control is essential.",
     uses: ["Flooring", "Joinery", "Wall panelling", "Decking"],
     care: "Acclimatise before installation; re-oil or re-lacquer as needed.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/wood.jpg",
     imageAlt: "Pale weathered timber boards with visible grain",
   },
@@ -255,7 +255,7 @@ export const materials: Material[] = [
       "From structural glazing to shower screens, glass brings in light while meeting safety and thermal requirements.",
     uses: ["Windows & façades", "Partitions", "Balustrades", "Shower screens"],
     care: "Specify toughened or laminated glass where required.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/glass.jpg",
     imageAlt: "A reflective metal and glass commercial façade with blue fins",
   },
@@ -267,7 +267,7 @@ export const materials: Material[] = [
       "The backbone of most structures — and, when detailed well, a refined finished surface in its own right.",
     uses: ["Structure", "Polished floors", "Exposed soffits", "Precast panels"],
     care: "Correct curing is critical; seal exposed finishes.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/concrete.jpg",
     imageAlt: "A façade of large grey precast panels in shadow",
   },
@@ -279,7 +279,7 @@ export const materials: Material[] = [
       "Limestone, sandstone and slate for cladding and landscaping, with a texture that improves as it weathers.",
     uses: ["Cladding", "Feature walls", "Garden walls", "Paving"],
     care: "Choose stone suited to the climate; seal where specified.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/stone.jpg",
     imageAlt: "A wall of thin stacked beige stone",
   },
@@ -291,7 +291,7 @@ export const materials: Material[] = [
       "Steel, aluminium and brass for structure, frames, balustrades and refined details.",
     uses: ["Structural steel", "Window frames", "Railings", "Hardware"],
     care: "Specify coatings for corrosion protection outdoors.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/metal.jpg",
     imageAlt: "A brushed steel surface with fine directional grain",
   },
@@ -303,7 +303,7 @@ export const materials: Material[] = [
       "From flat mineral paints to textured plasters, the final coat depends on the preparation beneath it.",
     uses: ["Walls & ceilings", "Joinery", "Textured finishes", "Exterior coatings"],
     care: "Use washable finishes in high-traffic areas.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/paint.jpg",
     imageAlt: "A white textured plaster wall surface",
   },
@@ -315,7 +315,7 @@ export const materials: Material[] = [
       "Light is a material too. Layered ambient, task and accent lighting shapes how every other finish is seen.",
     uses: ["Pendants", "Recessed downlights", "Linear LED", "Façade lighting"],
     care: "Specify warm colour temperatures and good colour rendering.",
-    application: "Interior & exterior",
+    application: "both",
     image: "/images/materials/lighting.jpg",
     imageAlt: "A black cone pendant light glowing amber against a white ceiling",
   },
@@ -323,107 +323,147 @@ export const materials: Material[] = [
 
 export const benefits = [
   {
+    id: "coordinated",
     title: "Coordinated services",
     body: "Design, structure, services and finishes are planned together, so trades do not undo each other's work.",
   },
   {
+    id: "communication",
     title: "Clear communication",
     body: "One point of contact, written decisions and plain-language explanations of every choice that affects cost or time.",
   },
   {
+    id: "scheduling",
     title: "Organised scheduling",
     body: "A milestone programme shared from the start and updated as the project moves forward.",
   },
   {
+    id: "standards",
     title: "Material & workmanship standards",
     body: "Samples approved before ordering, and work inspected at each stage before it is covered up.",
   },
   {
+    id: "quotations",
     title: "Detailed quotations",
     body: "Itemised pricing with inclusions, exclusions and assumptions stated — not a single number on a page.",
   },
   {
+    id: "reporting",
     title: "Progress reporting",
     body: "Regular updates with photos, so you can follow the build even when you cannot be on site.",
   },
   {
+    id: "coordination",
     title: "Professional coordination",
     body: "Procurement, deliveries, inspections and specialists managed as one plan.",
   },
   {
+    id: "scope",
     title: "Transparent scope",
     body: "Changes are priced and agreed in writing before they happen, so the final account has no surprises.",
   },
 ];
 
-export type Faq = { question: string; answer: string; topic: string };
+export type Faq = { id: string; question: string; answer: string; topic: string };
 
 export const faqs: Faq[] = [
   {
+    id: "costs",
     topic: "Costs",
     question: "How much does construction cost?",
     answer:
-      "It depends on location, size, structure, finishing level, site conditions and current material and labour prices. Our online estimator gives a preliminary range using example rates; a detailed quotation follows a site visit and an agreed scope.",
+      "It depends on location, size, structure, finishing level, site conditions and current material and labour prices. Our online estimator shows figures only where reviewed rates exist — illustrative examples can be previewed and are clearly labelled. A detailed quotation follows a site visit and an agreed scope.",
   },
   {
+    id: "timelines",
     topic: "Timelines",
     question: "How long does a typical project take?",
     answer:
       "Timelines vary with scope and approvals. A bathroom renovation may take a few weeks, while a new house usually takes many months. We agree a milestone programme before work starts and update it as the project progresses.",
   },
   {
+    id: "materials",
     topic: "Materials",
     question: "Can I choose my own materials and finishes?",
     answer:
       "Yes. We provide a finishes schedule and arrange samples so you can compare options. You can also supply your own materials; we will advise on suitability and installation requirements.",
   },
   {
+    id: "drawings",
     topic: "Design",
     question: "Do you prepare architectural drawings?",
     answer:
-      "Yes — from site surveys and 2D floor plans to coordinated architectural, structural and services drawings and 3D visualisations. Drawings can be prepared for approvals, pricing and construction.",
+      "Design and drawings are part of our service directory — from site surveys and 2D floor plans to coordinated drawings and 3D visualisations. Where drawings must be prepared or stamped by licensed professionals for an authority submission, who does this for your project is confirmed in writing.",
   },
   {
+    id: "renovation",
     topic: "Renovation",
     question: "Can you renovate while we continue living in the property?",
     answer:
       "Often, yes. We phase work, protect occupied areas and agree working hours. Some stages — such as major rewiring or structural work — may require parts of the home to be vacated temporarily.",
   },
   {
+    id: "services",
     topic: "Services",
     question: "Do you handle plumbing and electrical work?",
     answer:
-      "Yes. Plumbing, electrical, HVAC and specialist systems are planned with the design, installed by qualified trades, and tested before being concealed.",
+      "Plumbing, electrical, HVAC and specialist systems are part of our service directory, and availability for your location is confirmed with your quotation. They are planned with the design and tested before being concealed.",
   },
   {
+    id: "quotations",
     topic: "Quotations",
     question: "What is included in a quotation?",
     answer:
       "An itemised breakdown of work, materials and allowances, with stated inclusions, exclusions and assumptions, plus a proposed payment schedule. Nothing is hidden in a single lump sum.",
   },
   {
+    id: "payments",
     topic: "Payments",
     question: "How are payments structured?",
     answer:
       "Payments are typically tied to completed milestones agreed in the contract, rather than to dates. The exact schedule depends on the project and is confirmed in writing before work begins.",
   },
   {
+    id: "site-visits",
     topic: "Site visits",
     question: "Do you visit the site before quoting?",
     answer:
       "Yes. A site visit is needed to measure, understand conditions and identify risks. Quotations prepared without one are clearly marked as preliminary.",
   },
   {
+    id: "supervision",
     topic: "Supervision",
     question: "Who supervises the work on site?",
     answer:
       "Each project has a designated coordinator responsible for the programme, quality checks and communication with you, supported by trade supervisors on site.",
   },
   {
+    id: "warranties",
     topic: "Warranties",
     question: "What warranties or workmanship policies apply?",
     answer:
       "Warranty terms depend on the contract and the products installed. Manufacturer warranties are passed on at handover, and our workmanship terms will be set out in your contract. We do not make guarantees that are not written into the agreement.",
+  },
+  {
+    id: "coverage",
+    topic: "Coverage",
+    question: "Which emirates do you work in?",
+    answer:
+      "Tell us your emirate and project location when you request a quotation. Service coverage is confirmed for each project during the first conversation — we do not assume we can serve a location before checking.",
+  },
+  {
+    id: "tax",
+    topic: "Costs",
+    question: "Are prices in AED, and do they include VAT?",
+    answer:
+      "Quotations are prepared in UAE dirhams. Whether VAT or other charges apply, and whether they are included in a figure, is stated in each written quotation. Online estimates do not include tax.",
+  },
+  {
+    id: "permits",
+    topic: "Approvals",
+    question: "Do I need a permit for my project?",
+    answer:
+      "Many construction and renovation works need approval, and the requirements depend on the emirate, the property's location and type, and the scope of work. Our planning guide links to official sources. Whether we can prepare or submit applications for your project is confirmed in writing, and approval is never guaranteed.",
   },
 ];
 

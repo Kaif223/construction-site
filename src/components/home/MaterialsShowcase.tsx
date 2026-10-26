@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Material } from "@/data/content";
+import { useI18n } from "@/i18n/client";
 
 /**
  * Expanding material panels. Each panel is a button, so pointer hover,
@@ -10,6 +11,7 @@ import type { Material } from "@/data/content";
  * one are always rendered as text below the strip.
  */
 export function MaterialsShowcase({ materials }: { materials: Material[] }) {
+  const { dict, t } = useI18n();
   const [active, setActive] = useState(0);
   const current = materials[active];
 
@@ -18,7 +20,7 @@ export function MaterialsShowcase({ materials }: { materials: Material[] }) {
       <div
         className="no-scrollbar -mx-[var(--gutter)] flex h-[22rem] gap-2 overflow-x-auto px-[var(--gutter)] md:mx-0 md:h-[30rem] md:overflow-visible md:px-0 lg:h-[34rem]"
         role="group"
-        aria-label="Materials"
+        aria-label={dict.materialsPage.stripLabel}
       >
         {materials.map((material, index) => {
           const selected = index === active;
@@ -31,7 +33,7 @@ export function MaterialsShowcase({ materials }: { materials: Material[] }) {
               onClick={() => setActive(index)}
               onMouseEnter={() => setActive(index)}
               onFocus={() => setActive(index)}
-              className={`group relative shrink-0 overflow-hidden text-left transition-[flex-grow,width] duration-[900ms] ease-[var(--ease-out-expo)] max-md:w-[11rem] md:min-w-0 ${
+              className={`group relative shrink-0 overflow-hidden text-start transition-[flex-grow,width] duration-[900ms] ease-[var(--ease-out-expo)] max-md:w-[11rem] md:min-w-0 ${
                 selected ? "md:flex-[8_1_0%] max-md:w-[16rem]" : "md:flex-[1_1_0%]"
               }`}
             >
@@ -49,9 +51,9 @@ export function MaterialsShowcase({ materials }: { materials: Material[] }) {
                   selected ? "bg-gradient-to-t from-charcoal/85 via-charcoal/10 to-transparent" : "bg-charcoal/45"
                 }`}
               />
-              <span className="eyebrow absolute top-4 left-4 text-ivory/80">{material.code}</span>
+              <span className="eyebrow ltr-isolate absolute start-4 top-4 text-ivory/80">{material.code}</span>
               <span
-                className={`absolute bottom-5 left-4 font-display text-2xl leading-none text-ivory transition-opacity duration-500 md:bottom-6 md:left-6 md:text-3xl ${
+                className={`absolute start-4 bottom-5 font-display text-2xl leading-none text-ivory transition-opacity duration-500 md:start-6 md:bottom-6 md:text-3xl ${
                   selected ? "opacity-100" : "max-md:opacity-100 md:opacity-0"
                 }`}
               >
@@ -73,12 +75,12 @@ export function MaterialsShowcase({ materials }: { materials: Material[] }) {
       >
         <div className="md:col-span-4">
           <p className="eyebrow text-orange">
-            {current.code} · {current.application}
+            <span className="ltr-isolate">{current.code}</span> · {dict.materialsPage.applications[current.application]}
           </p>
           <h3 className="display-md mt-3">{current.name}</h3>
         </div>
         <p className="leading-relaxed text-ivory/75 md:col-span-5">{current.description}</p>
-        <ul className="flex flex-wrap content-start gap-2 md:col-span-3" aria-label={`Typical uses of ${current.name}`}>
+        <ul className="flex flex-wrap content-start gap-2 md:col-span-3" aria-label={t(dict.materialsPage.usesLabel, { name: current.name })}>
           {current.uses.map((use) => (
             <li key={use} className="rounded-full border border-line-inverse px-3 py-1.5 text-xs text-ivory/80">
               {use}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import type { AvailabilityStatus } from "@/config/markets";
 
 type HeadingTag = "h1" | "h2" | "h3";
 
@@ -7,15 +8,18 @@ type HeadingTag = "h1" | "h2" | "h3";
  * Headline split into authored lines, each clipped so it can slide up into
  * view. Lines are authored (not measured) so wrapping stays natural and the
  * text remains a single readable heading for assistive technology.
+ * `emphasis` marks which line indexes are set in italic (Latin only).
  */
 export function SplitHeading({
   as: Tag = "h2",
   lines,
+  emphasis = [],
   className = "",
   id,
 }: {
   as?: HeadingTag;
   lines: React.ReactNode[];
+  emphasis?: number[];
   className?: string;
   id?: string;
 }) {
@@ -24,7 +28,7 @@ export function SplitHeading({
       {lines.map((line, index) => (
         <span key={index} className="line-mask">
           <span>
-            {line}
+            {emphasis.includes(index) ? <em>{line}</em> : line}
             {index < lines.length - 1 ? " " : null}
           </span>
         </span>
@@ -76,7 +80,7 @@ export function ButtonLink({
   return (
     <Link href={href} className={`btn btn-${variant} ${className}`}>
       {children}
-      <Icon aria-hidden="true" className="h-4 w-4" />
+      <Icon aria-hidden="true" className="icon-dir h-4 w-4" />
     </Link>
   );
 }
@@ -95,22 +99,57 @@ export function TextLink({
       <span className="link-line">{children}</span>
       <ArrowRight
         aria-hidden="true"
-        className="h-4 w-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1"
+        className="icon-dir h-4 w-4 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-[calc(0.25rem*var(--dir))]"
       />
     </Link>
   );
 }
 
 /** Small badge used wherever demonstration content appears. */
-export function ConceptBadge({ tone = "dark", className = "" }: { tone?: "dark" | "light"; className?: string }) {
-  const styles =
-    tone === "dark"
-      ? "border-charcoal/25 text-charcoal/75"
-      : "border-ivory/35 text-ivory/85";
+export function ConceptBadge({
+  label,
+  tone = "dark",
+  className = "",
+}: {
+  label: string;
+  tone?: "dark" | "light";
+  className?: string;
+}) {
+  const styles = tone === "dark" ? "border-charcoal/25 text-charcoal/75" : "border-ivory/35 text-ivory/85";
   return (
     <span className={`eyebrow inline-flex items-center gap-2 rounded-full border px-3 py-1.5 ${styles} ${className}`}>
       <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-orange" />
-      Concept project
+      {label}
+    </span>
+  );
+}
+
+const availabilityStyles: Record<AvailabilityStatus, string> = {
+  available: "border-success/40 text-success",
+  partner: "border-mineral/50 text-mineral",
+  "not-offered": "border-charcoal/25 text-ink-muted line-through decoration-1",
+  unconfirmed: "border-charcoal/20 text-ink-muted",
+};
+
+/** Market availability of a service. Uses a text label, never colour alone. */
+export function AvailabilityBadge({
+  status,
+  label,
+  description,
+  className = "",
+}: {
+  status: AvailabilityStatus;
+  label: string;
+  description?: string;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${availabilityStyles[status]} ${className}`}
+      title={description}
+    >
+      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-current" />
+      {label}
     </span>
   );
 }

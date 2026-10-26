@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useScrollMotion } from "@/lib/gsap";
-
-const headline = ["Built with Purpose.", "Designed to Last."];
+import { useI18n } from "@/i18n/client";
 
 /** Staggers the CSS entrance animations defined in globals.css. */
 const order = (i: number) => ({ "--i": i }) as React.CSSProperties;
@@ -17,6 +16,8 @@ const order = (i: number) => ({ "--i": i }) as React.CSSProperties;
  * scroll-out drift, and is loaded on demand.
  */
 export function Hero() {
+  const { dict, href } = useI18n();
+  const t = dict.hero;
   const root = useRef<HTMLElement>(null);
 
   useScrollMotion(root, ({ gsap }) => {
@@ -44,7 +45,7 @@ export function Hero() {
           <div data-hero-zoom className="absolute inset-0 scale-[1.06]">
             <Image
             src="/images/hero/residence-dusk.jpg"
-            alt="A contemporary two-storey residence with glowing interiors at dusk, framed by a mature tree"
+            alt={t.imageAlt}
             fill
             preload
             sizes="100vw"
@@ -54,7 +55,7 @@ export function Hero() {
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-charcoal/40" />
-        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/70 via-charcoal/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal/70 via-charcoal/10 to-transparent rtl:bg-gradient-to-l" />
         <div data-hero-curtain aria-hidden="true" />
       </div>
 
@@ -94,19 +95,19 @@ export function Hero() {
       >
         <div
           data-hero="fade" style={order(0)}
-          className="absolute top-[calc(var(--header-h)+2.75rem)] right-[var(--gutter)] hidden text-right font-mono text-[0.68rem] leading-relaxed tracking-[0.14em] text-ivory/70 uppercase md:block"
+          className="eyebrow absolute end-[var(--gutter)] top-[calc(var(--header-h)+2.75rem)] hidden text-end leading-relaxed text-ivory/70 md:block"
         >
-          <p>Fig. 01 — Concept residence</p>
-          <p>Elevation study · Dusk</p>
+          <p>{t.figure[0]}</p>
+          <p>{t.figure[1]}</p>
         </div>
 
         <p data-hero="fade" style={order(1)} className="eyebrow mb-6 flex items-center gap-3 text-ivory/80">
           <span aria-hidden="true" className="h-px w-8 bg-orange" />
-          Architecture · Construction · Finishing
+          {t.eyebrow}
         </p>
 
         <h1 id="hero-title" data-hero="lines" className="display-hero">
-          {headline.map((line, index) => (
+          {t.lines.map((line, index) => (
             <span key={line} className="line-mask">
               <span className={index === 1 ? "italic text-ivory/90" : undefined} style={order(index)}>
                 {line}
@@ -118,31 +119,30 @@ export function Hero() {
 
         <div className="mt-8 grid gap-8 md:mt-10 md:grid-cols-12 md:items-end">
           <p data-hero="fade" style={order(2)} className="lede max-w-md text-ivory/85 md:col-span-5">
-            From architectural vision to the final finishing detail, we bring every part of your construction
-            project together under one roof.
+            {t.copy}
           </p>
           <div data-hero="fade" style={order(3)} className="flex flex-col gap-3 xs:flex-row md:col-span-7 md:justify-end">
-            <Link href="/projects" className="btn btn-primary" data-cursor="Explore">
-              Explore Our Work <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            <Link href={href("/projects")} className="btn btn-primary" data-cursor={dict.cursor.explore}>
+              {t.explore} <ArrowRight aria-hidden="true" className="icon-dir h-4 w-4" />
             </Link>
-            <Link href="/contact" className="btn btn-ghost-light">
-              Start Your Project
+            <Link href={href("/quote")} className="btn btn-ghost-light">
+              {t.start}
             </Link>
           </div>
         </div>
 
         <div
           data-hero="fade" style={order(4)}
-          className="mt-10 flex items-center justify-between border-t border-line-inverse pt-5 font-mono text-[0.68rem] tracking-[0.14em] text-ivory/60 uppercase"
+          className="eyebrow mt-10 flex items-center justify-between border-t border-line-inverse pt-5 text-ivory/60"
         >
           <a href="#introduction" className="group inline-flex items-center gap-3 text-ivory/80 hover:text-ivory">
             <span aria-hidden="true" className="relative block h-8 w-px overflow-hidden bg-ivory/20">
               <span className="scroll-cue absolute inset-0 bg-orange" />
             </span>
-            Scroll to explore
+            {t.scroll}
             <ArrowDown aria-hidden="true" className="h-3.5 w-3.5 transition-transform group-hover:translate-y-0.5" />
           </a>
-          <span className="hidden sm:inline">Design · Build · Finish — under one roof</span>
+          <span className="hidden sm:inline">{t.tagline}</span>
         </div>
       </div>
     </section>

@@ -14,21 +14,30 @@ export function CompareSlider({
   before,
   after,
   initial = 50,
+  label,
+  valueText,
+  cursorLabel,
   className = "",
 }: {
   before: Side;
   after: Side;
   initial?: number;
+  /** Accessible name of the slider, e.g. "Compare drawing and built". */
+  label: string;
+  /** Spoken value; "{value}" is replaced with the percentage. */
+  valueText: string;
+  cursorLabel: string;
   className?: string;
 }) {
   const [position, setPosition] = useState(initial);
   const id = useId();
 
   return (
-    <div className={className}>
+    // The comparison is spatial (drawing on the left, building on the right), so it stays left-to-right in every language.
+    <div className={className} dir="ltr">
       <div
         className="relative aspect-[4/3] overflow-hidden bg-graphite select-none md:aspect-[16/9]"
-        data-cursor="Drag"
+        data-cursor={cursorLabel}
       >
         <Image src={after.src} alt={after.alt} fill sizes="(min-width: 1024px) 80vw, 100vw" className="object-cover" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
@@ -59,7 +68,7 @@ export function CompareSlider({
         </div>
 
         <label htmlFor={id} className="sr-only">
-          Compare {before.label.toLowerCase()} and {after.label.toLowerCase()}
+          {label}
         </label>
         <input
           id={id}
@@ -69,7 +78,7 @@ export function CompareSlider({
           step={1}
           value={position}
           onChange={(event) => setPosition(Number(event.target.value))}
-          aria-valuetext={`${position}% ${before.label.toLowerCase()}`}
+          aria-valuetext={valueText.replace("{value}", String(position))}
           className="peer absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
         />
         <div

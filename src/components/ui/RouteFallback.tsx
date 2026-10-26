@@ -8,7 +8,7 @@ export function RouteFallback({ label }: { label: string }) {
     <section aria-busy="true" className="grid-paper-dark relative min-h-[150svh] bg-charcoal text-ivory">
       <div className="container-x flex min-h-[88svh] flex-col justify-end pt-[var(--header-h)] pb-12">
         <p className="sr-only" role="status">
-          Loading {label}…
+          {label}
         </p>
         <div aria-hidden="true" className="animate-pulse space-y-5">
           <div className="h-3 w-40 rounded-full bg-ivory/15" />

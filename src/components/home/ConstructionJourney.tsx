@@ -6,6 +6,7 @@ import type { ScrollTrigger as ScrollTriggerType } from "gsap/ScrollTrigger";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import type { JourneyStage } from "@/data/content";
 import { useScrollMotion } from "@/lib/gsap";
+import { useI18n } from "@/i18n/client";
 
 /**
  * Nine construction stages presented as an accessible tab set.
@@ -13,6 +14,7 @@ import { useScrollMotion } from "@/lib/gsap";
  * the stages. Everywhere else: tap, click or arrow keys switch stages.
  */
 export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
+  const { dict, dir } = useI18n();
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<ScrollTriggerType | null>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -47,7 +49,10 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
   }
 
   function onTabKey(event: React.KeyboardEvent, index: number) {
-    const keys: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+    // Horizontal arrows follow reading direction: in Arabic, Left moves forward.
+    const forward = dir === "rtl" ? "ArrowLeft" : "ArrowRight";
+    const backward = dir === "rtl" ? "ArrowRight" : "ArrowLeft";
+    const keys: Record<string, number> = { ArrowDown: 1, [forward]: 1, ArrowUp: -1, [backward]: -1 };
     if (event.key in keys) {
       event.preventDefault();
       select(index + keys[event.key], true);
@@ -64,7 +69,7 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
         <div className="lg:col-span-3">
           <div
             role="tablist"
-            aria-label="Construction stages"
+            aria-label={dict.journey.tablist}
             aria-orientation="vertical"
             className="no-scrollbar -mx-[var(--gutter)] flex gap-2 overflow-x-auto px-[var(--gutter)] lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:px-0"
           >
@@ -84,7 +89,7 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
                   tabIndex={selected ? 0 : -1}
                   onClick={() => select(index)}
                   onKeyDown={(event) => onTabKey(event, index)}
-                  className={`group flex min-h-11 shrink-0 items-center gap-3 rounded-full border px-4 text-left text-sm whitespace-nowrap transition-colors duration-500 lg:rounded-none lg:border-0 lg:border-b lg:border-line-inverse lg:px-0 lg:py-3 lg:whitespace-normal ${
+                  className={`group flex min-h-11 shrink-0 items-center gap-3 rounded-full border px-4 text-start text-sm whitespace-nowrap transition-colors duration-500 lg:rounded-none lg:border-0 lg:border-b lg:border-line-inverse lg:px-0 lg:py-3 lg:whitespace-normal ${
                     selected
                       ? "border-orange bg-orange text-charcoal lg:bg-transparent lg:text-ivory"
                       : "border-line-inverse text-ivory/60 hover:text-ivory"
@@ -94,7 +99,7 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
                   <span>{item.title}</span>
                   <span
                     aria-hidden="true"
-                    className={`ml-auto hidden h-px bg-orange transition-all duration-700 ease-[var(--ease-out-expo)] lg:block ${
+                    className={`ms-auto hidden h-px bg-orange transition-all duration-700 ease-[var(--ease-out-expo)] lg:block ${
                       selected ? "w-8" : "w-0"
                     }`}
                   />
@@ -130,14 +135,14 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
             ))}
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between p-4 md:p-5">
               <span className="eyebrow rounded-full bg-charcoal/75 px-3 py-1.5 backdrop-blur">
-                Stage {stage.number} / {String(total).padStart(2, "0")}
+                {dict.journey.stage} {stage.number} / {String(total).padStart(2, "0")}
               </span>
             </div>
           </div>
           {/* Progress */}
           <div aria-hidden="true" className="mt-4 h-px bg-line-inverse">
             <div
-              className="h-px origin-left bg-orange transition-transform duration-700 ease-[var(--ease-out-expo)]"
+              className="h-px origin-left bg-orange transition-transform rtl:origin-right duration-700 ease-[var(--ease-out-expo)]"
               style={{ transform: `scaleX(${(active + 1) / total})` }}
             />
           </div>
@@ -155,7 +160,7 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
           </p>
           <h3 className="display-md mt-4">{stage.title}</h3>
           <p className="mt-4 leading-relaxed text-ivory/75">{stage.description}</p>
-          <p className="eyebrow mt-8 text-ivory-muted">Checked before moving on</p>
+          <p className="eyebrow mt-8 text-ivory-muted">{dict.journey.checked}</p>
           <ul className="mt-3 space-y-2.5 text-sm">
             {stage.checks.map((check) => (
               <li key={check} className="flex items-start gap-3">
@@ -169,17 +174,17 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
               type="button"
               onClick={() => select(active - 1)}
               className="grid h-11 w-11 place-items-center rounded-full border border-ivory/30 transition-colors hover:border-ivory"
-              aria-label="Previous stage"
+              aria-label={dict.journey.previous}
             >
-              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+              <ArrowLeft aria-hidden="true" className="icon-dir h-4 w-4" />
             </button>
             <button
               type="button"
               onClick={() => select(active + 1)}
               className="grid h-11 w-11 place-items-center rounded-full border border-ivory/30 transition-colors hover:border-ivory"
-              aria-label="Next stage"
+              aria-label={dict.journey.next}
             >
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              <ArrowRight aria-hidden="true" className="icon-dir h-4 w-4" />
             </button>
           </div>
         </div>

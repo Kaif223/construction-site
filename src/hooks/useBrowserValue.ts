@@ -59,4 +59,6 @@ export type EstimateHandoff = {
   projectType: string;
   area: string;
   areaUnit: "sqm" | "sqft";
+  floors: string;
+  region: string;
 };

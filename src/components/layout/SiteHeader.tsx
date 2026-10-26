@@ -6,12 +6,46 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { mainNav, siteConfig } from "@/config/site";
 import { Logo } from "@/components/ui/Logo";
+import { useI18n } from "@/i18n/client";
+import { siblingLocales, switchLocalePath } from "@/i18n/locales";
+
+const LANGUAGE_NAMES: Record<string, string> = { en: "English", ar: "العربية" };
 
 function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+/** Links to the current page in the market's other languages. */
+function LanguageSwitch({ className = "" }: { className?: string }) {
+  const { locale, dict } = useI18n();
+  const pathname = usePathname();
+  const others = siblingLocales(locale).filter((item) => item !== locale);
+  if (others.length === 0) return null;
+  return (
+    <div className={className} role="group" aria-label={dict.common.language}>
+      {others.map((other) => {
+        const language = other.split("-")[0];
+        return (
+          <a
+            key={other}
+            href={switchLocalePath(pathname, other)}
+            hrefLang={language}
+            lang={language}
+            onClick={() => {
+              document.cookie = `construkt-locale=${other}; path=/; max-age=31536000; samesite=lax`;
+            }}
+            className="inline-flex min-h-11 items-center rounded-full px-3 text-sm hover:underline"
+          >
+            {LANGUAGE_NAMES[language] ?? language}
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
 export function SiteHeader() {
+  const { dict, href } = useI18n();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [solid, setSolid] = useState(false);
@@ -78,81 +112,84 @@ export function SiteHeader() {
 
   return (
     <>
-    <header
-      className={`fixed inset-x-0 top-0 z-50 animate-[header-enter_0.9s_var(--ease-out-expo)_0.35s_both] transition-[transform,background-color,color,box-shadow] duration-500 ease-[var(--ease-out-expo)] ${
-        hidden && !menuOpen ? "-translate-y-full" : ""
-      } ${
-        onLight
-          ? "bg-ivory/90 text-charcoal shadow-[0_1px_0_var(--color-line)] backdrop-blur-md"
-          : "bg-transparent text-ivory"
-      }`}
-    >
-      <div className="container-x flex h-[var(--header-h)] items-center justify-between gap-6">
-        <Link href="/" className="relative z-10 rounded-sm" aria-label={`${siteConfig.name} — home`}>
-          <Logo />
-        </Link>
-
-        <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-8 text-[0.9rem]">
-            {mainNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="link-line"
-                  aria-current={isActive(pathname, item.href) ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="relative z-10 flex items-center gap-3">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 animate-[header-enter_0.9s_var(--ease-out-expo)_0.35s_both] transition-[transform,background-color,color,box-shadow] duration-500 ease-[var(--ease-out-expo)] ${
+          hidden && !menuOpen ? "-translate-y-full" : ""
+        } ${
+          onLight ? "bg-ivory/90 text-charcoal shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "bg-transparent text-ivory"
+        }`}
+      >
+        <div className="container-x flex h-[var(--header-h)] items-center justify-between gap-4">
           <Link
-            href="/contact"
-            className={`btn hidden min-h-11 px-5 text-sm sm:inline-flex ${onLight ? "btn-dark" : "btn-primary"}`}
+            href={href("/")}
+            className="relative z-10 rounded-sm"
+            aria-label={dict.common.homeAria.replace("{brand}", siteConfig.name)}
           >
-            Start a project
-            <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+            <Logo />
           </Link>
-          <button
-            ref={toggleRef}
-            type="button"
-            className="inline-flex h-11 items-center gap-3 rounded-full px-3 text-sm lg:hidden"
-            aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            <span className="eyebrow">{menuOpen ? "Close" : "Menu"}</span>
-            <span aria-hidden="true" className="relative block h-3 w-6">
-              <span
-                className={`absolute left-0 h-px w-6 bg-current transition-transform duration-500 ease-[var(--ease-out-expo)] ${
-                  menuOpen ? "top-1.5 rotate-45" : "top-0"
-                }`}
-              />
-              <span
-                className={`absolute left-0 h-px w-6 bg-current transition-transform duration-500 ease-[var(--ease-out-expo)] ${
-                  menuOpen ? "top-1.5 -rotate-45" : "top-3"
-                }`}
-              />
-            </span>
-          </button>
+
+          <nav aria-label={dict.common.mainNav} className="hidden xl:block">
+            <ul className="flex items-center gap-7 text-[0.9rem]">
+              {mainNav.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={href(item.href)}
+                    className="link-line"
+                    aria-current={isActive(pathname, href(item.href)) ? "page" : undefined}
+                  >
+                    {dict.nav[item.key]}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="relative z-10 flex items-center gap-2">
+            <LanguageSwitch className="hidden sm:flex" />
+            <Link
+              href={href("/quote")}
+              className={`btn hidden min-h-11 px-5 text-sm sm:inline-flex ${onLight ? "btn-dark" : "btn-primary"}`}
+            >
+              {dict.common.requestQuote}
+              <ArrowUpRight aria-hidden="true" className="icon-dir h-4 w-4" />
+            </Link>
+            <button
+              ref={toggleRef}
+              type="button"
+              className="inline-flex h-11 items-center gap-3 rounded-full px-3 text-sm xl:hidden"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span className="eyebrow">{menuOpen ? dict.common.close : dict.common.menu}</span>
+              <span aria-hidden="true" className="relative block h-3 w-6">
+                <span
+                  className={`absolute start-0 h-px w-6 bg-current transition-transform duration-500 ease-[var(--ease-out-expo)] ${
+                    menuOpen ? "top-1.5 rotate-45" : "top-0"
+                  }`}
+                />
+                <span
+                  className={`absolute start-0 h-px w-6 bg-current transition-transform duration-500 ease-[var(--ease-out-expo)] ${
+                    menuOpen ? "top-1.5 -rotate-45" : "top-3"
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
 
       {/* Sibling of <header>, not a child: the header's transform and backdrop
           filter would otherwise trap this fixed overlay inside its own box. */}
       <div
         id="mobile-menu"
-        aria-label="Main menu"
+        aria-label={dict.common.mainMenu}
         role="dialog"
         aria-modal="true"
         hidden={!menuOpen}
-        className="grid-paper-dark fixed inset-0 z-40 h-[100dvh] overflow-y-auto bg-charcoal pt-[var(--header-h)] text-ivory lg:hidden"
+        className="grid-paper-dark fixed inset-0 z-40 h-[100dvh] overflow-y-auto bg-charcoal pt-[var(--header-h)] text-ivory xl:hidden"
       >
-        <nav aria-label="Mobile" className="container-x flex min-h-full flex-col justify-between gap-10 pt-8 pb-10">
+        <nav aria-label={dict.common.mobileNav} className="container-x flex min-h-full flex-col justify-between gap-10 pt-8 pb-10">
           <ul className="space-y-1">
             {mainNav.map((item, index) => (
               <li
@@ -162,30 +199,28 @@ export function SiteHeader() {
               >
                 <Link
                   ref={index === 0 ? firstLinkRef : undefined}
-                  href={item.href}
-                  className="flex items-baseline justify-between py-4 font-display text-[2.6rem] leading-none sm:text-6xl"
-                  aria-current={isActive(pathname, item.href) ? "page" : undefined}
+                  href={href(item.href)}
+                  className="flex items-baseline justify-between py-4 font-display text-[2.4rem] leading-tight sm:text-6xl"
+                  aria-current={isActive(pathname, href(item.href)) ? "page" : undefined}
                 >
-                  {item.label}
+                  {dict.nav[item.key]}
                   <span className="eyebrow text-ivory-muted">0{index + 1}</span>
                 </Link>
               </li>
             ))}
           </ul>
           <div className="space-y-6">
-            <Link href="/contact" className="btn btn-primary w-full">
-              Start a project <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+            <Link href={href("/quote")} className="btn btn-primary w-full">
+              {dict.common.requestQuote} <ArrowUpRight aria-hidden="true" className="icon-dir h-4 w-4" />
             </Link>
-            <div className="flex flex-wrap justify-between gap-4 text-sm text-ivory-muted">
-              <Link href="/estimate" className="link-line">
-                Budget estimator
+            <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-ivory-muted">
+              <Link href={href("/estimate")} className="link-line">
+                {dict.nav.estimate}
               </Link>
-              <Link href="/faq" className="link-line">
-                FAQ
+              <Link href={href("/faq")} className="link-line">
+                {dict.nav.faq}
               </Link>
-              <a href={`mailto:${siteConfig.contact.email}`} className="link-line">
-                {siteConfig.contact.email}
-              </a>
+              <LanguageSwitch className="flex text-ivory" />
             </div>
           </div>
         </nav>

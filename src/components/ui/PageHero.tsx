@@ -10,6 +10,7 @@ export function PageHero({
   crumbs,
   eyebrow,
   title,
+  emphasis = [1],
   intro,
   image,
   imageAlt = "",
@@ -19,6 +20,7 @@ export function PageHero({
   crumbs: Crumb[];
   eyebrow: string;
   title: React.ReactNode[];
+  emphasis?: number[];
   intro?: React.ReactNode;
   image?: string;
   imageAlt?: string;
@@ -29,7 +31,7 @@ export function PageHero({
     <section className="grain relative isolate overflow-hidden bg-charcoal text-ivory">
       {image ? (
         <div className="absolute inset-0 -z-10">
-          <div data-parallax="0.08" className="absolute -inset-y-[10%] inset-x-0">
+          <div data-parallax="0.08" className="absolute inset-x-0 -inset-y-[10%]">
             <Image src={image} alt={imageAlt} fill preload sizes="100vw" className="object-cover opacity-45" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-charcoal/30" />
@@ -43,7 +45,7 @@ export function PageHero({
         <p className="eyebrow mt-12 text-orange md:mt-20" data-reveal="fade">
           {eyebrow}
         </p>
-        <SplitHeading as="h1" lines={title} className="display-xl mt-5 max-w-[16ch]" />
+        <SplitHeading as="h1" lines={title} emphasis={emphasis} className="display-xl mt-5 max-w-[16ch]" />
         <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
           {intro && (
             <div className="lede max-w-2xl text-ivory/80 lg:col-span-7" data-reveal="up">
@@ -51,10 +53,7 @@ export function PageHero({
             </div>
           )}
           {meta && (
-            <dl
-              className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line-inverse pt-6 lg:col-span-5"
-              data-reveal="stagger"
-            >
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line-inverse pt-6 lg:col-span-5" data-reveal="stagger">
               {meta.map((item) => (
                 <div key={item.label}>
                   <dt className="eyebrow text-ivory-muted">{item.label}</dt>

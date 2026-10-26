@@ -672,5 +672,45 @@
    1800,
    1350
   ]
+ },
+ {
+  "file": "services/solar-smart-home.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1613665813446-82a78c468a1d",
+  "size": [
+   1600,
+   1083
+  ]
+ },
+ {
+  "file": "services/roofing-waterproofing.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1635424710928-0544e8512eae",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "services/property-maintenance.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1559302504-64aae6ca6b6d",
+  "size": [
+   1600,
+   896
+  ]
+ },
+ {
+  "file": "brand/planning-desk.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1581092160562-40aa08e78837",
+  "size": [
+   1600,
+   1067
+  ]
  }
 ]

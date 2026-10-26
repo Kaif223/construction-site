@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useDeferredValue, useId, useState } from "react";
 import { ArrowUpRight, Search, X } from "lucide-react";
+import { useI18n } from "@/i18n/client";
 
 export type SearchableService = {
   id: string;
@@ -13,14 +14,21 @@ export type SearchableService = {
   categoryCode: string;
 };
 
-const suggestions = ["Marble", "Solar", "Bathroom", "Waterproofing", "Kitchen", "CCTV"];
-
+/** Lower-cases and strips accents and Arabic diacritics so searches match loosely. */
 function normalise(value: string) {
-  return value.toLowerCase().normalize("NFKD").replace(/[^\w\s]/g, " ");
+  return value
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f\u064b-\u065f\u0670]/g, "")
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ");
 }
 
 /** Instant search across every service, linking to its category page anchor. */
 export function ServiceFinder({ services }: { services: SearchableService[] }) {
+  const { dict, href, t, p } = useI18n();
+  const s = dict.services;
   const uid = useId();
   const [query, setQuery] = useState("");
   const deferred = useDeferredValue(query);
@@ -37,15 +45,15 @@ export function ServiceFinder({ services }: { services: SearchableService[] }) {
     <div>
       <form role="search" onSubmit={(event) => event.preventDefault()} className="relative">
         <label htmlFor={`${uid}-q`} className="sr-only">
-          Search all services
+          {s.searchLabel}
         </label>
-        <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-5 h-5 w-5 -translate-y-1/2 text-ink-muted" />
+        <Search aria-hidden="true" className="pointer-events-none absolute start-5 top-1/2 h-5 w-5 -translate-y-1/2 text-ink-muted" />
         <input
           id={`${uid}-q`}
           type="search"
           autoComplete="off"
-          placeholder={`Search ${services.length} services…`}
-          className="field !min-h-16 !rounded-full !pr-14 !pl-14 text-lg"
+          placeholder={t(s.placeholder, { services: p(dict.plurals.service, services.length) })}
+          className="field !min-h-16 !rounded-full !ps-14 !pe-14 text-lg"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           aria-describedby={`${uid}-status`}
@@ -54,8 +62,8 @@ export function ServiceFinder({ services }: { services: SearchableService[] }) {
           <button
             type="button"
             onClick={() => setQuery("")}
-            className="absolute top-1/2 right-3 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full hover:bg-ivory-deep"
-            aria-label="Clear search"
+            className="absolute end-3 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full hover:bg-ivory-deep"
+            aria-label={s.clear}
           >
             <X aria-hidden="true" className="h-4 w-4" />
           </button>
@@ -64,8 +72,8 @@ export function ServiceFinder({ services }: { services: SearchableService[] }) {
 
       {terms.length === 0 ? (
         <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
-          <span className="eyebrow mr-2 text-ink-muted">Try</span>
-          {suggestions.map((suggestion) => (
+          <span className="eyebrow me-2 text-ink-muted">{s.try}</span>
+          {s.suggestions.map((suggestion) => (
             <button key={suggestion} type="button" className="choice !min-h-10" onClick={() => setQuery(suggestion)}>
               {suggestion}
             </button>
@@ -74,18 +82,18 @@ export function ServiceFinder({ services }: { services: SearchableService[] }) {
       ) : null}
 
       <p id={`${uid}-status`} aria-live="polite" className="eyebrow mt-6 text-ink-muted">
-        {terms.length === 0 ? "" : `${results.length} ${results.length === 1 ? "service" : "services"} found`}
+        {terms.length === 0 ? "" : t(s.found, { services: p(dict.plurals.service, results.length) })}
       </p>
 
       {terms.length > 0 && results.length === 0 && (
         <div className="mt-4 rounded-md border border-line bg-paper p-6">
-          <p className="font-medium">No services match “{deferred}”.</p>
+          <p className="font-medium">{t(s.noMatch, { query: deferred })}</p>
           <p className="mt-1 text-sm text-ink-muted">
-            Try a broader word, or{" "}
-            <Link href="/contact" className="underline underline-offset-2">
-              describe your project
-            </Link>{" "}
-            and we will tell you how we can help.
+            {s.noMatchHelp.split("{link}")[0]}
+            <Link href={href("/quote")} className="underline underline-offset-2">
+              {s.noMatchLink}
+            </Link>
+            {s.noMatchHelp.split("{link}")[1]}
           </p>
         </div>
       )}
@@ -95,19 +103,19 @@ export function ServiceFinder({ services }: { services: SearchableService[] }) {
           {results.slice(0, 24).map((service) => (
             <li key={`${service.categorySlug}-${service.id}`} className="bg-paper">
               <Link
-                href={`/services/${service.categorySlug}#${service.id}`}
+                href={href(`/services/${service.categorySlug}#${service.id}`)}
                 className="group flex h-full items-start justify-between gap-4 p-5 hover:bg-ivory"
               >
                 <span>
                   <span className="eyebrow text-orange-ink">
-                    {service.categoryCode} · {service.categoryTitle}
+                    <span className="ltr-isolate">{service.categoryCode}</span> · {service.categoryTitle}
                   </span>
                   <span className="mt-1.5 block font-medium">{service.name}</span>
                   <span className="mt-1 block text-sm text-ink-muted">{service.summary}</span>
                 </span>
                 <ArrowUpRight
                   aria-hidden="true"
-                  className="mt-1 h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  className="icon-dir mt-1 h-4 w-4 shrink-0 transition-transform group-hover:-translate-y-0.5"
                 />
               </Link>
             </li>
@@ -115,7 +123,7 @@ export function ServiceFinder({ services }: { services: SearchableService[] }) {
         </ul>
       )}
       {results.length > 24 && (
-        <p className="mt-3 text-sm text-ink-muted">Showing the first 24 — refine your search to narrow the list.</p>
+        <p className="mt-3 text-sm text-ink-muted">{t(s.showingFirst, { count: 24 })}</p>
       )}
     </div>
   );

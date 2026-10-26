@@ -4,12 +4,14 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import type { ProjectImage } from "@/data/projects";
+import { useI18n } from "@/i18n/client";
 
 /**
  * Project gallery with a lightbox built on the native <dialog> element, which
  * provides focus containment, Escape-to-close and an inert background.
  */
 export function Gallery({ images, title }: { images: ProjectImage[]; title: string }) {
+  const { dict, t, dir } = useI18n();
   const dialog = useRef<HTMLDialogElement>(null);
   const opener = useRef<HTMLButtonElement | null>(null);
   const [index, setIndex] = useState(0);
@@ -27,12 +29,14 @@ export function Gallery({ images, title }: { images: ProjectImage[]; title: stri
     if (!el) return;
     const onKey = (event: KeyboardEvent) => {
       if (!el.open) return;
-      if (event.key === "ArrowRight") go(1);
-      if (event.key === "ArrowLeft") go(-1);
+      // Arrow keys follow reading direction.
+      const step = dir === "rtl" ? -1 : 1;
+      if (event.key === "ArrowRight") go(step);
+      if (event.key === "ArrowLeft") go(-step);
     };
     el.addEventListener("keydown", onKey);
     return () => el.removeEventListener("keydown", onKey);
-  }, [go]);
+  }, [go, dir]);
 
   return (
     <>
@@ -45,10 +49,10 @@ export function Gallery({ images, title }: { images: ProjectImage[]; title: stri
               <button
                 type="button"
                 onClick={(event) => open(i, event.currentTarget)}
-                data-cursor="Open Gallery"
+                data-cursor={dict.cursor.openGallery}
                 className="group relative block w-full overflow-hidden bg-ivory-deep"
                 style={{ aspectRatio: i === 0 && images.length > 2 ? "21 / 9" : String(Math.max(image.ratio, 1.2)) }}
-                aria-label={`Open image ${i + 1} of ${images.length}: ${image.alt}`}
+                aria-label={t(dict.gallery.open, { n: i + 1, total: images.length, alt: image.alt })}
               >
                 <Image
                   src={image.src}
@@ -57,8 +61,8 @@ export function Gallery({ images, title }: { images: ProjectImage[]; title: stri
                   sizes={i === 0 ? "100vw" : "(min-width: 768px) 55vw, 100vw"}
                   className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.03]"
                 />
-                <span className="eyebrow absolute bottom-3 left-3 rounded-full bg-charcoal/70 px-3 py-1.5 text-ivory opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-                  View {String(i + 1).padStart(2, "0")}
+                <span className="eyebrow absolute start-3 bottom-3 rounded-full bg-charcoal/70 px-3 py-1.5 text-ivory opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                  {t(dict.gallery.view, { n: String(i + 1).padStart(2, "0") })}
                 </span>
               </button>
             </li>
@@ -68,7 +72,7 @@ export function Gallery({ images, title }: { images: ProjectImage[]; title: stri
 
       <dialog
         ref={dialog}
-        aria-label={`${title} gallery`}
+        aria-label={t(dict.gallery.label, { title })}
         className="m-0 h-[100dvh] max-h-none w-screen max-w-none bg-charcoal/97 p-0 text-ivory backdrop:bg-charcoal/80"
         onClick={(event) => {
           if (event.target === dialog.current) dialog.current.close();
@@ -85,7 +89,7 @@ export function Gallery({ images, title }: { images: ProjectImage[]; title: stri
               autoFocus
               onClick={() => dialog.current?.close()}
               className="grid h-11 w-11 place-items-center rounded-full border border-ivory/30 hover:border-ivory"
-              aria-label="Close gallery"
+              aria-label={dict.gallery.close}
             >
               <X aria-hidden="true" className="h-5 w-5" />
             </button>
@@ -111,17 +115,17 @@ export function Gallery({ images, title }: { images: ProjectImage[]; title: stri
                 type="button"
                 onClick={() => go(-1)}
                 className="grid h-12 w-12 place-items-center rounded-full border border-ivory/30 hover:border-ivory"
-                aria-label="Previous image"
+                aria-label={dict.gallery.previous}
               >
-                <ArrowLeft aria-hidden="true" className="h-5 w-5" />
+                <ArrowLeft aria-hidden="true" className="icon-dir h-5 w-5" />
               </button>
               <button
                 type="button"
                 onClick={() => go(1)}
                 className="grid h-12 w-12 place-items-center rounded-full border border-ivory/30 hover:border-ivory"
-                aria-label="Next image"
+                aria-label={dict.gallery.next}
               >
-                <ArrowRight aria-hidden="true" className="h-5 w-5" />
+                <ArrowRight aria-hidden="true" className="icon-dir h-5 w-5" />
               </button>
             </div>
           )}

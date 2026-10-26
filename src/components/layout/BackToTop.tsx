@@ -2,7 +2,7 @@
 
 import { ArrowUp } from "lucide-react";
 
-export function BackToTop() {
+export function BackToTop({ label }: { label: string }) {
   return (
     <button
       type="button"
@@ -13,7 +13,7 @@ export function BackToTop() {
         document.getElementById("main")?.focus({ preventScroll: true });
       }}
     >
-      Back to top <ArrowUp aria-hidden="true" className="h-3.5 w-3.5" />
+      {label} <ArrowUp aria-hidden="true" className="h-3.5 w-3.5" />
     </button>
   );
 }
