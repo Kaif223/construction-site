@@ -1,0 +1,676 @@
+[
+ {
+  "file": "hero/residence-dusk.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+  "size": [
+   2400,
+   1600
+  ]
+ },
+ {
+  "file": "brand/architect-drawing.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
+  "size": [
+   1600,
+   900
+  ]
+ },
+ {
+  "file": "brand/site-team.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1504307651254-35680f356dfd",
+  "size": [
+   1800,
+   1192
+  ]
+ },
+ {
+  "file": "brand/closing-residence.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600607688969-a5bfcd646154",
+  "size": [
+   2400,
+   1600
+  ]
+ },
+ {
+  "file": "brand/contact-residence.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f",
+  "size": [
+   1600,
+   2186
+  ]
+ },
+ {
+  "file": "services/planning-design.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1503387837-b154d5074bd2",
+  "size": [
+   1600,
+   900
+  ]
+ },
+ {
+  "file": "services/construction.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "services/interior-finishing.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "services/electrical.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1621905251189-08b45d6a269e",
+  "size": [
+   1600,
+   1068
+  ]
+ },
+ {
+  "file": "services/plumbing.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39",
+  "size": [
+   1600,
+   1200
+  ]
+ },
+ {
+  "file": "services/hvac-mechanical.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1497366811353-6870744d04b2",
+  "size": [
+   1600,
+   1068
+  ]
+ },
+ {
+  "file": "services/renovation.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15",
+  "size": [
+   1600,
+   1065
+  ]
+ },
+ {
+  "file": "services/exterior-landscape.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "services/specialist.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1511818966892-d7d671e672a2",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/cedar-ridge-1.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+  "size": [
+   2000,
+   1327
+  ]
+ },
+ {
+  "file": "projects/cedar-ridge-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/cedar-ridge-3.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/cedar-ridge-4.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c",
+  "size": [
+   1600,
+   1088
+  ]
+ },
+ {
+  "file": "projects/linden-house-1.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600047509358-9dc75507daeb",
+  "size": [
+   2000,
+   1333
+  ]
+ },
+ {
+  "file": "projects/linden-house-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde",
+  "size": [
+   1600,
+   1342
+  ]
+ },
+ {
+  "file": "projects/linden-house-3.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/linden-house-4.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600489000022-c2086d79f9d4",
+  "size": [
+   1600,
+   2133
+  ]
+ },
+ {
+  "file": "projects/meridian-1.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1497366216548-37526070297c",
+  "size": [
+   2000,
+   1335
+  ]
+ },
+ {
+  "file": "projects/meridian-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1497366811353-6870744d04b2",
+  "size": [
+   1600,
+   1068
+  ]
+ },
+ {
+  "file": "projects/meridian-3.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/travertine-1.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1620626011761-996317b8d101",
+  "size": [
+   2000,
+   1335
+  ]
+ },
+ {
+  "file": "projects/travertine-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600566752355-35792bedcfea",
+  "size": [
+   1600,
+   2400
+  ]
+ },
+ {
+  "file": "projects/travertine-3.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/travertine-4.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/oak-quartz-1.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600585152220-90363fe7e115",
+  "size": [
+   2000,
+   1333
+  ]
+ },
+ {
+  "file": "projects/oak-quartz-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1556912173-3bb406ef7e77",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/oak-quartz-3.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1565538810643-b5bdb714032a",
+  "size": [
+   1600,
+   2400
+  ]
+ },
+ {
+  "file": "projects/oak-quartz-4.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1541123437800-1bb1317badc2",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/northgate-1.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1574958269340-fa927503f3dd",
+  "size": [
+   2000,
+   1552
+  ]
+ },
+ {
+  "file": "projects/northgate-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/northgate-3.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1460317442991-0ec209397118",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/garden-pavilion-1.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914",
+  "size": [
+   2000,
+   1500
+  ]
+ },
+ {
+  "file": "projects/garden-pavilion-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/garden-pavilion-3.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae",
+  "size": [
+   1600,
+   900
+  ]
+ },
+ {
+  "file": "projects/garden-pavilion-4.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "projects/atrium-stone-2.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87",
+  "size": [
+   1600,
+   2133
+  ]
+ },
+ {
+  "file": "journey/01-site-preparation.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1517089596392-fb9a9033e05b",
+  "size": [
+   1800,
+   1349
+  ]
+ },
+ {
+  "file": "journey/03-structure.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77",
+  "size": [
+   1800,
+   1311
+  ]
+ },
+ {
+  "file": "journey/04-enclosure.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1587582423116-ec07293f0395",
+  "size": [
+   1800,
+   1200
+  ]
+ },
+ {
+  "file": "journey/05-services.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4",
+  "size": [
+   1800,
+   1202
+  ]
+ },
+ {
+  "file": "journey/06-plaster.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15",
+  "size": [
+   1800,
+   1198
+  ]
+ },
+ {
+  "file": "journey/08-finishing.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0",
+  "size": [
+   1800,
+   1350
+  ]
+ },
+ {
+  "file": "journey/09-handover.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+  "size": [
+   1800,
+   1194
+  ]
+ },
+ {
+  "file": "process/crane.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1429497419816-9ca5cfb4571a",
+  "size": [
+   1600,
+   1067
+  ]
+ },
+ {
+  "file": "process/consultation.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1503387837-b154d5074bd2",
+  "size": [
+   1600,
+   900
+  ]
+ },
+ {
+  "file": "materials/glass.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1574958269340-fa927503f3dd",
+  "size": [
+   1400,
+   1087
+  ]
+ },
+ {
+  "file": "materials/porcelain.jpg",
+  "source": "Unsplash",
+  "license": "Unsplash License",
+  "url": "https://images.unsplash.com/photo-1600566752355-35792bedcfea",
+  "size": [
+   1400,
+   2100
+  ]
+ },
+ {
+  "file": "materials/marble.jpg",
+  "source": "stocksnap",
+  "license": "CC0",
+  "creator": "Flat Lay Photos",
+  "url": "https://stocksnap.io/photo/white-marble-ESDCTK2C7Z",
+  "size": [
+   960,
+   645
+  ]
+ },
+ {
+  "file": "projects/atrium-stone-1.jpg",
+  "source": "stocksnap",
+  "license": "CC0",
+  "creator": "Flat Lay Photos",
+  "url": "https://stocksnap.io/photo/white-marble-ESDCTK2C7Z",
+  "size": [
+   960,
+   645
+  ]
+ },
+ {
+  "file": "journey/07-flooring.jpg",
+  "source": "wordpress",
+  "license": "CC0",
+  "creator": "Nilo Velez",
+  "url": "https://wordpress.org/photos/photo/2663b35f09/",
+  "size": [
+   1800,
+   1200
+  ]
+ },
+ {
+  "file": "projects/atrium-stone-3.jpg",
+  "source": "wordpress",
+  "license": "CC0",
+  "creator": "Nilo Velez",
+  "url": "https://wordpress.org/photos/photo/2663b35f09/",
+  "size": [
+   1800,
+   1200
+  ]
+ },
+ {
+  "file": "materials/granite.jpg",
+  "source": "wordpress",
+  "license": "CC0",
+  "creator": "James Huff",
+  "url": "https://wordpress.org/photos/photo/781679abb5/",
+  "size": [
+   1800,
+   1350
+  ]
+ },
+ {
+  "file": "materials/stone.jpg",
+  "source": "rawpixel",
+  "license": "CC0",
+  "creator": null,
+  "url": "https://www.rawpixel.com/image/6030451/stone-wall-texture-free-public-domain-cc0-image",
+  "size": [
+   1024,
+   683
+  ]
+ },
+ {
+  "file": "projects/atrium-stone-4.jpg",
+  "source": "rawpixel",
+  "license": "CC0",
+  "creator": null,
+  "url": "https://www.rawpixel.com/image/6030451/stone-wall-texture-free-public-domain-cc0-image",
+  "size": [
+   1024,
+   683
+  ]
+ },
+ {
+  "file": "materials/concrete.jpg",
+  "source": "rawpixel",
+  "license": "CC0",
+  "creator": null,
+  "url": "https://www.rawpixel.com/image/6028459/photo-image-background-texture-public-domain",
+  "size": [
+   1024,
+   683
+  ]
+ },
+ {
+  "file": "materials/paint.jpg",
+  "source": "rawpixel",
+  "license": "CC0",
+  "creator": "Ake",
+  "url": "https://www.rawpixel.com/image/6129200/concrete-wall-texture-background-abstract-design",
+  "size": [
+   1024,
+   689
+  ]
+ },
+ {
+  "file": "materials/metal.jpg",
+  "source": "rawpixel",
+  "license": "CC0",
+  "creator": null,
+  "url": "https://www.rawpixel.com/image/5937294/free-public-domain-cc0-photo",
+  "size": [
+   1024,
+   683
+  ]
+ },
+ {
+  "file": "materials/ceramic.jpg",
+  "source": "wordpress",
+  "license": "CC0",
+  "creator": "Elena Zheng",
+  "url": "https://wordpress.org/photos/photo/24869de9a0/",
+  "size": [
+   1800,
+   1200
+  ]
+ },
+ {
+  "file": "materials/wood.jpg",
+  "source": "stocksnap",
+  "license": "CC0",
+  "creator": "Tim Sullivan",
+  "url": "https://stocksnap.io/photo/white-washed-3L3T18QEQQ",
+  "size": [
+   960,
+   641
+  ]
+ },
+ {
+  "file": "journey/02-foundation.jpg",
+  "source": "rawpixel",
+  "license": "CC0",
+  "creator": null,
+  "url": "https://www.rawpixel.com/image/9658920/construction",
+  "size": [
+   1024,
+   682
+  ]
+ },
+ {
+  "file": "materials/lighting.jpg",
+  "source": "wordpress",
+  "license": "CC0",
+  "creator": "appealdahal",
+  "url": "https://wordpress.org/photos/photo/4316a113e0/",
+  "size": [
+   1800,
+   1350
+  ]
+ }
+]
