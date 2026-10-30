@@ -104,13 +104,25 @@ function Card({ text, photo, textless }: { text: CardText; photo: string; textle
           padding: `56px ${PAD}px 48px`,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <svg width="40" height="40" viewBox="0 0 32 32">
-            <path d="M3 13V3h10" stroke={colors.charcoal} strokeWidth="2.4" fill="none" />
-            <path d="M29 19v10H19" stroke={colors.charcoal} strokeWidth="2.4" fill="none" />
-            <rect x="9" y="9" width="14" height="14" fill={colors.orange} />
-          </svg>
-          <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: 7 }}>{siteConfig.name}</div>
+        {/* Logo, with the web address opposite it */}
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: rtl ? "row-reverse" : "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <svg width="40" height="40" viewBox="0 0 32 32">
+              <path d="M3 13V3h10" stroke={colors.charcoal} strokeWidth="2.4" fill="none" />
+              <path d="M29 19v10H19" stroke={colors.charcoal} strokeWidth="2.4" fill="none" />
+              <rect x="9" y="9" width="14" height="14" fill={colors.orange} />
+            </svg>
+            <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: 7 }}>{siteConfig.name}</div>
+          </div>
+          <div style={{ display: "flex", fontSize: host.length > 28 ? 14 : 17, fontWeight: 600, color: colors.muted }}>{host}</div>
         </div>
 
         {textless ? (
@@ -151,18 +163,15 @@ function Card({ text, photo, textless }: { text: CardText; photo: string; textle
         <div
           style={{
             width: "100%",
+            height: 46,
             display: "flex",
-            flexDirection: rtl ? "row-reverse" : "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: "flex-end",
             borderTop: `1.5px solid ${colors.line}`,
-            paddingTop: 18,
             fontSize: 18,
             color: colors.muted,
           }}
         >
-          <div style={{ display: "flex" }}>{textless ? "" : text.footer}</div>
-          <div style={{ display: "flex", color: colors.charcoal, fontWeight: 600 }}>{host}</div>
+          {textless ? "" : text.footer}
         </div>
       </div>
 
@@ -224,7 +233,7 @@ async function arabicLayers(text: CardText) {
     arabicText(text.eyebrow, { size: 20, weight: "Regular", color: colors.orangeInk, width: width - 50, spacing: 0 }),
     arabicText(title, { size: title.length > 30 ? 46 : 54, weight: "SemiBold", color: colors.charcoal, width, spacing: -8 }),
     arabicText(clip(text.subtitle, 110), { size: 22, weight: "Regular", color: colors.muted, width: width - 10, spacing: -2 }),
-    arabicText(text.footer, { size: 16, weight: "Regular", color: colors.muted, width: 400, spacing: 0 }),
+    arabicText(text.footer, { size: 16, weight: "Regular", color: colors.muted, width, spacing: 0 }),
   ]);
 
   const layers: Parameters<ReturnType<typeof sharp>["composite"]>[0] = [];
@@ -240,7 +249,7 @@ async function arabicLayers(text: CardText) {
   top += heading.height + 16;
   // Leave the subtitle out rather than run into the footer rule.
   if (top + subtitle.height <= 520) layers.push({ input: subtitle.input, top, left: right - subtitle.width });
-  layers.push({ input: footer.input, top: 548 + Math.max(0, Math.round((26 - footer.height) / 2)), left: right - footer.width });
+  layers.push({ input: footer.input, top: HEIGHT - 48 - footer.height, left: right - footer.width });
   return layers;
 }
 
