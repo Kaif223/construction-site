@@ -4,7 +4,16 @@
  */
 export const siteConfig = {
   name: "CONSTRUKT",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://construkt.example",
+  /**
+   * Public URL for canonical links, the sitemap and social previews. On Vercel
+   * this falls back to the project's production domain until a custom domain
+   * is set in NEXT_PUBLIC_SITE_URL.
+   */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "https://construkt.example"),
   /** Verified social profiles only. Hidden while empty. */
   social: [] as { label: string; href: string }[],
   /**
