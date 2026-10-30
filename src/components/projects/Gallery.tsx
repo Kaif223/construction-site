@@ -49,7 +49,6 @@ export function Gallery({ images, title }: { images: ProjectImage[]; title: stri
               <button
                 type="button"
                 onClick={(event) => open(i, event.currentTarget)}
-                data-cursor={dict.cursor.openGallery}
                 className="group relative block w-full overflow-hidden bg-ivory-deep"
                 style={{ aspectRatio: i === 0 && images.length > 2 ? "21 / 9" : String(Math.max(image.ratio, 1.2)) }}
                 aria-label={t(dict.gallery.open, { n: i + 1, total: images.length, alt: image.alt })}

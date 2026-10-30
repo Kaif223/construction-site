@@ -12,11 +12,30 @@ declare global {
 
 const PARALLAX_QUERY = "(min-width: 768px) and (prefers-reduced-motion: no-preference)";
 
+/** React marks every DOM node it has hydrated or rendered with a `__reactFiber$…` key. */
+function isHydrated(el: Element) {
+  return Object.keys(el).some((key) => key.startsWith("__reactFiber$"));
+}
+
+/**
+ * Resolves once the document has loaded and the main thread is idle — by
+ * then streamed Suspense boundaries have hydrated. Decorative scroll effects
+ * wait for this; entrance reveals do not.
+ */
+function pageSettled() {
+  return new Promise<void>((resolve) => {
+    const idle = () =>
+      "requestIdleCallback" in window ? requestIdleCallback(() => resolve(), { timeout: 1500 }) : setTimeout(resolve, 200);
+    if (document.readyState === "complete") idle();
+    else window.addEventListener("load", idle, { once: true });
+  });
+}
+
 /**
  * Declarative scroll motion for server-rendered markup.
  *
  * Sections stay Server Components and opt in with attributes:
- *   data-reveal="up | fade | lines | mask | stagger | rule"
+ *   data-reveal="up | fade | lines | mask | stagger | rule | guides"
  *       Entrance played once when the element enters the viewport. The
  *       transitions themselves live in globals.css; this component only adds
  *       `is-revealed`, using a single IntersectionObserver.
@@ -35,30 +54,42 @@ export function MotionProvider() {
     if (!document.documentElement.classList.contains("motion-ready")) return;
 
     // ── Entrance reveals ────────────────────────────────────────────────
+    // Adding the class to a node React has not hydrated yet (a streamed
+    // Suspense boundary on first load) would be a hydration mismatch, so wait
+    // until React has claimed the node; give up waiting after ~2 seconds.
+    const frames = new Set<number>();
+    function reveal(el: Element, attempt = 0) {
+      if (attempt < 120 && !isHydrated(el)) {
+        const frame = requestAnimationFrame(() => {
+          frames.delete(frame);
+          reveal(el, attempt + 1);
+        });
+        frames.add(frame);
+        return;
+      }
+      el.classList.add("is-revealed");
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          entry.target.classList.add("is-revealed");
           observer.unobserve(entry.target);
+          reveal(entry.target);
         }
       },
       { rootMargin: "0px 0px -10% 0px" },
     );
 
+    // Bound elements are tracked here rather than marked in the DOM: this runs
+    // while later Suspense boundaries may still be hydrating, and any attribute
+    // written before React reaches them would be a hydration mismatch. Stagger
+    // order comes from CSS (:nth-child) and word order from the markup.
+    const bound = new WeakSet<Element>();
     function scanReveals() {
-      document.querySelectorAll<HTMLElement>("[data-reveal]:not([data-reveal-bound])").forEach((el) => {
-        el.dataset.revealBound = "";
-        const type = el.dataset.reveal;
-        if (type === "stagger") {
-          Array.from(el.children).forEach((child, index) =>
-            (child as HTMLElement).style.setProperty("--i", String(index)),
-          );
-        } else if (type === "lines") {
-          el.querySelectorAll<HTMLElement>(".line-mask > span").forEach((span, index) =>
-            span.style.setProperty("--i", String(index)),
-          );
-        }
+      document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-revealed)").forEach((el) => {
+        if (bound.has(el)) return;
+        bound.add(el);
         observer.observe(el);
       });
     }
@@ -73,7 +104,8 @@ export function MotionProvider() {
       revertScroll = undefined;
       const targets = document.querySelectorAll("[data-parallax], [data-scrub]");
       if (!media.matches || targets.length === 0) return;
-      const { gsap } = await loadGsap();
+      // GSAP writes inline styles, so wait until React has hydrated the page.
+      const [{ gsap }] = await Promise.all([loadGsap(), pageSettled()]);
       if (disposed) return;
       const ctx = gsap.context(() => {
         gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
@@ -133,11 +165,8 @@ export function MotionProvider() {
     return () => {
       disposed = true;
       cancelAnimationFrame(pending);
+      frames.forEach((frame) => cancelAnimationFrame(frame));
       observer.disconnect();
-      // Anything still waiting to reveal must be re-observed by the next scan.
-      document
-        .querySelectorAll<HTMLElement>("[data-reveal-bound]:not(.is-revealed)")
-        .forEach((el) => delete el.dataset.revealBound);
       mutations.disconnect();
       media.removeEventListener("change", setupScroll);
       revertScroll?.();

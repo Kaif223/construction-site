@@ -70,7 +70,6 @@ export default async function ProcessPage() {
             className="mt-10"
             label={t(dict.compare.label, { before: j.drawing, after: j.built })}
             valueText={t(dict.compare.valueText, { before: j.drawing })}
-            cursorLabel={dict.cursor.drag}
             before={{ src: "/images/brand/residence-blueprint.jpg", alt: j.drawingAlt, label: j.drawing }}
             after={{ src: "/images/hero/residence-dusk.jpg", alt: j.builtAlt, label: j.built }}
           />

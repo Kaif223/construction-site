@@ -111,7 +111,6 @@ export function ProjectGrid({ projects, categories }: { projects: Project[]; cat
                 href={href(`/projects/${project.slug}`)}
                 statusLabel={dict.projects.status[project.status]}
                 categoryLabel={dict.projects.categories[project.category]}
-                cursorLabel={dict.cursor.viewProject}
                 headingLevel="h2"
                 aspect={index % 4 === 0 || index % 4 === 3 ? "aspect-[3/2]" : "aspect-[4/5]"}
               />

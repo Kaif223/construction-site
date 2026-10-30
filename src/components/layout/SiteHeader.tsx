@@ -200,7 +200,7 @@ export function SiteHeader() {
                 <Link
                   ref={index === 0 ? firstLinkRef : undefined}
                   href={href(item.href)}
-                  className="flex items-baseline justify-between py-4 font-display text-[2.4rem] leading-tight sm:text-6xl"
+                  className="flex items-baseline justify-between py-4 font-display text-[1.875rem] leading-tight font-medium sm:text-5xl"
                   aria-current={isActive(pathname, href(item.href)) ? "page" : undefined}
                 >
                   {dict.nav[item.key]}

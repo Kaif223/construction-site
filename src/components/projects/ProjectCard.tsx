@@ -7,7 +7,6 @@ export function ProjectCard({
   href,
   statusLabel,
   categoryLabel,
-  cursorLabel,
   aspect = "aspect-[4/3]",
   sizes = "(min-width: 1024px) 45vw, 100vw",
   headingLevel: Heading = "h3",
@@ -16,13 +15,12 @@ export function ProjectCard({
   href: string;
   statusLabel: string;
   categoryLabel: string;
-  cursorLabel: string;
   aspect?: string;
   sizes?: string;
   headingLevel?: "h2" | "h3";
 }) {
   return (
-    <Link href={href} data-cursor={cursorLabel} className="group block">
+    <Link href={href} className="group block">
       <div className={`relative overflow-hidden bg-ivory-deep ${aspect}`}>
         <Image
           src={project.cover.src}

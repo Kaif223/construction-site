@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import type { AvailabilityStatus } from "@/config/markets";
@@ -5,10 +6,29 @@ import type { AvailabilityStatus } from "@/config/markets";
 type HeadingTag = "h1" | "h2" | "h3";
 
 /**
- * Headline split into authored lines, each clipped so it can slide up into
- * view. Lines are authored (not measured) so wrapping stays natural and the
- * text remains a single readable heading for assistive technology.
- * `emphasis` marks which line indexes are set in italic (Latin only).
+ * Wraps each word of `text` in a `.word-mask` so it can rise into view.
+ * Words are numbered from `start` through `--i`, written into the markup so
+ * the server and client render identical HTML. Non-string content is
+ * treated as a single word.
+ */
+export function maskWords(text: React.ReactNode, start = 0) {
+  const words = typeof text === "string" ? text.split(" ").filter(Boolean) : [text];
+  const nodes = words.map((word, index) => (
+    <Fragment key={index}>
+      <span className="word-mask">
+        <span style={{ "--i": start + index } as React.CSSProperties}>{word}</span>
+      </span>
+      {index < words.length - 1 ? " " : null}
+    </Fragment>
+  ));
+  return { nodes, count: words.length };
+}
+
+/**
+ * Headline in authored lines whose words rise into view one after another.
+ * Lines are authored (not measured) so wrapping stays natural and the text
+ * remains a single readable heading for assistive technology.
+ * `emphasis` marks which line indexes are set in a quieter tone.
  */
 export function SplitHeading({
   as: Tag = "h2",
@@ -23,14 +43,17 @@ export function SplitHeading({
   className?: string;
   id?: string;
 }) {
+  const masked = lines.reduce<{ nodes: React.ReactNode[]; count: number }[]>(
+    (done, line) => [...done, maskWords(line, done.reduce((sum, item) => sum + item.count, 0))],
+    [],
+  );
+
   return (
     <Tag id={id} className={className} data-reveal="lines">
-      {lines.map((line, index) => (
-        <span key={index} className="line-mask">
-          <span>
-            {emphasis.includes(index) ? <em>{line}</em> : line}
-            {index < lines.length - 1 ? " " : null}
-          </span>
+      {masked.map(({ nodes }, index) => (
+        <span key={index} className="block">
+          {emphasis.includes(index) ? <em>{nodes}</em> : nodes}
+          {index < lines.length - 1 ? " " : null}
         </span>
       ))}
     </Tag>

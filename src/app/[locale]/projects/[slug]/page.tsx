@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { ButtonLink, ConceptBadge, SectionLabel } from "@/components/ui/primitives";
+import { ButtonLink, ConceptBadge, SectionLabel, SplitHeading } from "@/components/ui/primitives";
 import { CompareSlider } from "@/components/ui/CompareSlider";
 import { Gallery } from "@/components/projects/Gallery";
 import { ClosingCta } from "@/components/sections/ClosingCta";
@@ -85,11 +85,7 @@ async function ProjectContent({ params }: { params: Promise<{ slug: string }> })
               <span className="eyebrow ltr-isolate text-orange">{project.number}</span>
               {project.status === "concept" && <ConceptBadge tone="light" label={dict.common.conceptProject} />}
             </div>
-            <h1 id="project-title" className="display-xl mt-6 max-w-[14ch]" data-reveal="lines">
-              <span className="line-mask">
-                <span>{project.name}</span>
-              </span>
-            </h1>
+            <SplitHeading as="h1" id="project-title" lines={[project.name]} className="display-xl mt-6 max-w-[14ch]" />
             <p className="lede mt-6 max-w-2xl text-ivory/80" data-reveal="up">
               {project.summary}
             </p>
@@ -148,7 +144,6 @@ async function ProjectContent({ params }: { params: Promise<{ slug: string }> })
                 className="mt-8"
                 label={t(dict.compare.label, { before: p.before, after: p.after })}
                 valueText={t(dict.compare.valueText, { before: p.before })}
-                cursorLabel={dict.cursor.drag}
                 before={{ ...project.beforeAfter.before, label: p.before }}
                 after={{ ...project.beforeAfter.after, label: p.after }}
               />
@@ -224,7 +219,6 @@ async function ProjectContent({ params }: { params: Promise<{ slug: string }> })
             <Link
               key={label}
               href={href(`/projects/${item.slug}`)}
-              data-cursor={dict.cursor.viewProject}
               className={`group flex items-center gap-6 border-line-inverse py-10 md:py-14 ${
                 start ? "border-b md:border-b-0 md:pe-10" : "md:justify-end md:border-s md:ps-10 md:text-end"
               }`}

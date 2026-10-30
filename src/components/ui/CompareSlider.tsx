@@ -16,7 +16,6 @@ export function CompareSlider({
   initial = 50,
   label,
   valueText,
-  cursorLabel,
   className = "",
 }: {
   before: Side;
@@ -26,7 +25,6 @@ export function CompareSlider({
   label: string;
   /** Spoken value; "{value}" is replaced with the percentage. */
   valueText: string;
-  cursorLabel: string;
   className?: string;
 }) {
   const [position, setPosition] = useState(initial);
@@ -37,7 +35,6 @@ export function CompareSlider({
     <div className={className} dir="ltr">
       <div
         className="relative aspect-[4/3] overflow-hidden bg-graphite select-none md:aspect-[16/9]"
-        data-cursor={cursorLabel}
       >
         <Image src={after.src} alt={after.alt} fill sizes="(min-width: 1024px) 80vw, 100vw" className="object-cover" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>

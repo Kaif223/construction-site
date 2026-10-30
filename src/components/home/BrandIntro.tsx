@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getI18n } from "@/i18n/server";
 import { serviceCategories, totalServiceCount } from "@/data/services";
 import { SectionLabel, SplitHeading, TextLink } from "@/components/ui/primitives";
+import { CountUp } from "@/components/ui/CountUp";
 
 export async function BrandIntro() {
   const { dict, href } = await getI18n();
@@ -13,7 +14,8 @@ export async function BrandIntro() {
   ];
 
   return (
-    <section id="introduction" aria-labelledby="intro-title" className="relative bg-ivory py-24 md:py-36">
+    <section id="introduction" aria-labelledby="intro-title" className="relative isolate bg-ivory py-20 md:py-28">
+      <div aria-hidden="true" data-reveal="guides" className="column-guides" />
       <div className="container-x">
         <SectionLabel number="01">{t.label}</SectionLabel>
         <div className="mt-10 grid gap-14 lg:grid-cols-12 lg:gap-10">
@@ -28,7 +30,7 @@ export async function BrandIntro() {
           </div>
         </div>
 
-        <div className="mt-20 grid gap-10 md:mt-28 md:grid-cols-12 md:gap-6">
+        <div className="mt-16 grid gap-10 md:mt-20 md:grid-cols-12 md:gap-6">
           <figure className="md:col-span-7">
             <div data-reveal="mask" className="relative aspect-[4/3] overflow-hidden bg-ivory-deep">
               <Image
@@ -53,7 +55,9 @@ export async function BrandIntro() {
               {facts.map((fact) => (
                 <div key={fact.label} className="flex items-baseline justify-between py-5">
                   <dt className="eyebrow text-ink-muted">{fact.label}</dt>
-                  <dd className="font-display text-5xl leading-none">{fact.value}</dd>
+                  <dd className="font-display text-4xl leading-none font-medium tabular-nums md:text-5xl">
+                    <CountUp value={fact.value} />
+                  </dd>
                 </div>
               ))}
             </dl>

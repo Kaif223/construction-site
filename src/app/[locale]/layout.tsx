@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_Arabic, Instrument_Serif, Inter_Tight, JetBrains_Mono, Noto_Kufi_Arabic } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Inter_Tight, JetBrains_Mono, Noto_Kufi_Arabic } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import { locales } from "@/i18n/locales";
 import { getI18n } from "@/i18n/server";
@@ -9,15 +9,9 @@ import { pageMetadata } from "@/lib/seo";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { MotionProvider } from "@/components/layout/MotionProvider";
-import { CustomCursor } from "@/components/layout/CustomCursor";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { MobileQuoteBar } from "@/components/layout/MobileQuoteBar";
 import "../globals.css";
-
-const display = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-});
 
 const sans = Inter_Tight({ variable: "--font-inter-tight", subsets: ["latin"] });
 
@@ -70,7 +64,7 @@ const motionBootstrap = `(function(){try{var d=document.documentElement;if(!wind
 
 export default async function RootLayout({ children }: LayoutProps<"/[locale]">) {
   const { locale, language, dir, dict } = await getI18n();
-  const fonts = [display, sans, mono, arabicSans, arabicDisplay].map((font) => font.variable).join(" ");
+  const fonts = [sans, mono, arabicSans, arabicDisplay].map((font) => font.variable).join(" ");
 
   return (
     <html lang={language} dir={dir} className={fonts} data-scroll-behavior="smooth" suppressHydrationWarning>
@@ -90,8 +84,9 @@ export default async function RootLayout({ children }: LayoutProps<"/[locale]">)
             {children}
           </main>
           <SiteFooter />
+          <MobileQuoteBar />
           <MotionProvider />
-          <CustomCursor />
+          <SmoothScroll />
         </I18nProvider>
       </body>
     </html>

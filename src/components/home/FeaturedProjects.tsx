@@ -74,10 +74,9 @@ export function FeaturedProjects({ projects }: { projects: Project[] }) {
           <li key={project.slug} className="shrink-0 snap-start">
             <Link
               href={href(`/projects/${project.slug}`)}
-              data-cursor={dict.cursor.viewProject}
               className="group block w-[78vw] sm:w-[52vw] lg:w-min"
             >
-              <div className={`relative overflow-hidden bg-ivory-deep lg:h-[min(56vh,40rem)] ${shapes[index % shapes.length]}`}>
+              <div className={`relative overflow-hidden bg-ivory-deep lg:h-[min(50vh,34rem)] ${shapes[index % shapes.length]}`}>
                 <Image
                   src={project.cover.src}
                   alt={project.cover.alt}
@@ -91,7 +90,7 @@ export function FeaturedProjects({ projects }: { projects: Project[] }) {
               </div>
               <div className="mt-4 flex items-start justify-between gap-6">
                 <div>
-                  <h3 className="font-display text-2xl leading-tight md:text-3xl">{project.name}</h3>
+                  <h3 className="font-display text-xl leading-tight font-medium md:text-2xl">{project.name}</h3>
                   <p className="mt-1 text-sm text-ink-muted">
                     {project.type} · <span className="text-orange-ink">{dict.projects.status[project.status]}</span>
                   </p>
@@ -104,10 +103,10 @@ export function FeaturedProjects({ projects }: { projects: Project[] }) {
         <li className="shrink-0 snap-start">
           <Link
             href={href("/projects")}
-            className="group flex aspect-[4/5] w-[60vw] flex-col justify-between bg-charcoal p-8 text-ivory sm:w-[36vw] lg:h-[min(56vh,40rem)] lg:w-[min(44.8vh,32rem)]"
+            className="group flex aspect-[4/5] w-[60vw] flex-col justify-between bg-charcoal p-8 text-ivory sm:w-[36vw] lg:h-[min(50vh,34rem)] lg:w-[min(40vh,27.2rem)]"
           >
             <span className="eyebrow text-ivory-muted">{dict.home.projects.portfolio}</span>
-            <span className="font-display text-4xl leading-none md:text-5xl">
+            <span className="font-display text-3xl leading-none font-medium md:text-4xl">
               {dict.home.projects.viewAll[0]}
               <br />
               {dict.home.projects.viewAll[1]}

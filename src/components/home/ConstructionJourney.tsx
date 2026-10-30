@@ -26,7 +26,7 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
     trigger.current = ScrollTrigger.create({
       trigger: root.current,
       start: "top top",
-      end: () => `+=${window.innerHeight * total * 0.55}`,
+      end: () => `+=${window.innerHeight * total * 0.32}`,
       pin: true,
       onUpdate: (self) => {
         const index = Math.min(total - 1, Math.floor(self.progress * total));
@@ -111,7 +111,7 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
 
         {/* Image stack: later stages wipe up over earlier ones */}
         <div className="relative lg:col-span-6">
-          <div className="relative aspect-[4/3] overflow-hidden bg-graphite lg:aspect-auto lg:h-[min(64vh,44rem)]">
+          <div className="relative aspect-[4/3] overflow-hidden bg-graphite lg:aspect-auto lg:h-[min(58vh,40rem)]">
             {stages.map((item, index) => (
               <div
                 key={item.number}
@@ -155,7 +155,7 @@ export function ConstructionJourney({ stages }: { stages: JourneyStage[] }) {
           aria-labelledby={`stage-tab-${active}`}
           className="flex flex-col lg:col-span-3"
         >
-          <p className="font-display text-7xl leading-none text-orange lg:text-8xl" aria-hidden="true">
+          <p className="font-display text-5xl leading-none font-medium text-orange tabular-nums lg:text-6xl" aria-hidden="true">
             {stage.number}
           </p>
           <h3 className="display-md mt-4">{stage.title}</h3>

@@ -122,7 +122,7 @@ export async function SiteFooter() {
 
         <p
           aria-hidden="true"
-          className="pointer-events-none mt-10 select-none font-display text-[clamp(4rem,19vw,19rem)] leading-[0.8] tracking-[-0.03em] text-ivory/[0.07] [direction:ltr]"
+          className="pointer-events-none mt-10 select-none font-display text-[clamp(4rem,19vw,19rem)] font-semibold leading-[0.8] tracking-[-0.03em] text-ivory/[0.07] [direction:ltr]"
         >
           CONSTRUKT
         </p>

@@ -12,7 +12,6 @@ export function getDictionary(language: LanguageCode): Dictionary {
 const CLIENT_SECTIONS = [
   "common",
   "nav",
-  "cursor",
   "units",
   "plurals",
   "hero",

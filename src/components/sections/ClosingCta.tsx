@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getI18n } from "@/i18n/server";
 import { SplitHeading } from "@/components/ui/primitives";
+import { AlignOnScroll } from "@/components/ui/AlignOnScroll";
 
 export async function ClosingCta() {
   const { dict, href } = await getI18n();
@@ -23,11 +24,13 @@ export async function ClosingCta() {
         <div className="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/70 to-charcoal/20 rtl:bg-gradient-to-l" />
       </div>
 
-      <div className="container-x py-28 md:py-40">
+      <div className="container-x py-24 md:py-32">
         <p className="eyebrow text-orange" data-reveal="fade">
           {t.label}
         </p>
-        <SplitHeading id="closing-title" lines={t.lines} className="display-xl mt-6 max-w-[15ch]" />
+        <AlignOnScroll>
+          <SplitHeading id="closing-title" lines={t.lines} emphasis={[1]} className="display-xl mt-6 max-w-[15ch]" />
+        </AlignOnScroll>
         <ul className="mt-14 grid max-w-5xl border-t border-line-inverse sm:grid-cols-2" data-reveal="stagger">
           {actions.map((action) => (
             <li
@@ -36,7 +39,7 @@ export async function ClosingCta() {
             >
               <Link href={href(action.href)} className="group flex items-center justify-between gap-4 py-6">
                 <span>
-                  <span className="block text-xl md:text-2xl">{action.label}</span>
+                  <span className="block text-lg font-medium md:text-xl">{action.label}</span>
                   <span className="mt-1 block text-sm text-ivory/65">{action.note}</span>
                 </span>
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-ivory/30 transition-colors duration-500 group-hover:border-orange group-hover:bg-orange group-hover:text-charcoal">

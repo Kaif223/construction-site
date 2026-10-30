@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { Hero } from "@/components/home/Hero";
 import { BrandIntro } from "@/components/home/BrandIntro";
+import { StatementPanels } from "@/components/home/StatementPanels";
 import { ServicesOverview } from "@/components/home/ServicesOverview";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { ConstructionJourney } from "@/components/home/ConstructionJourney";
@@ -37,9 +38,11 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <StatementPanels />
       <BrandIntro />
 
-      <section aria-labelledby="services-title" className="grain relative bg-charcoal py-24 text-ivory md:py-36">
+      <section aria-labelledby="services-title" className="grain relative isolate bg-charcoal py-20 text-ivory md:py-28">
+        <div aria-hidden="true" data-reveal="guides" className="column-guides column-guides-light" />
         <div className="container-x">
           <div className="grid gap-8 md:grid-cols-12 md:items-end">
             <div className="md:col-span-8">
@@ -55,7 +58,7 @@ export default async function HomePage() {
               </TextLink>
             </div>
           </div>
-          <div className="mt-16 md:mt-24">
+          <div className="mt-12 md:mt-16">
             <Suspense>
               <ServicesOverview items={overview} />
             </Suspense>
@@ -63,7 +66,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="projects-title" className="bg-ivory pt-24 md:pt-36">
+      <section aria-labelledby="projects-title" className="bg-ivory pt-20 md:pt-28">
         <div className="container-x grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <SectionLabel number="03">{h.projects.label}</SectionLabel>
@@ -83,7 +86,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="journey-title" className="bg-charcoal pt-24 text-ivory md:pt-36">
+      <section aria-labelledby="journey-title" className="bg-charcoal pt-20 text-ivory md:pt-28">
         <div className="container-x grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <SectionLabel number="04" tone="light">
@@ -100,7 +103,7 @@ export default async function HomePage() {
             <ConstructionJourney stages={getJourney(language)} />
           </Suspense>
         </div>
-        <div className="container-x pt-20 pb-24 md:pb-36">
+        <div className="container-x pt-20 pb-20 md:pb-28">
           <div className="grid gap-8 md:grid-cols-12 md:items-end">
             <h3 className="display-md md:col-span-6" data-reveal="up">
               {h.journey.drawingTitle[0]} <span className="icon-dir inline-block text-orange">→</span> {h.journey.drawingTitle[1]}
@@ -114,14 +117,14 @@ export default async function HomePage() {
             initial={46}
             label={t(dict.compare.label, { before: h.journey.drawing, after: h.journey.built })}
             valueText={t(dict.compare.valueText, { before: h.journey.drawing })}
-            cursorLabel={dict.cursor.drag}
             before={{ src: "/images/brand/residence-blueprint.jpg", alt: h.journey.drawingAlt, label: h.journey.drawing }}
             after={{ src: "/images/hero/residence-dusk.jpg", alt: h.journey.builtAlt, label: h.journey.built }}
           />
         </div>
       </section>
 
-      <section aria-labelledby="why-title" className="bg-ivory py-24 md:py-36">
+      <section aria-labelledby="why-title" className="relative isolate bg-ivory py-20 md:py-28">
+        <div aria-hidden="true" data-reveal="guides" className="column-guides" />
         <div className="container-x">
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
@@ -150,7 +153,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="materials-title" className="grain relative bg-graphite py-24 text-ivory md:py-36">
+      <section aria-labelledby="materials-title" className="grain relative bg-graphite py-20 text-ivory md:py-28">
         <div className="container-x">
           <div className="grid gap-8 md:grid-cols-12 md:items-end">
             <div className="md:col-span-8">
@@ -174,7 +177,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="process-title" className="bg-ivory py-24 md:py-36">
+      <section aria-labelledby="process-title" className="bg-ivory py-20 md:py-28">
         <div className="container-x">
           <div className="mx-auto max-w-3xl text-center">
             <SectionLabel number="07" className="justify-center">
@@ -182,7 +185,7 @@ export default async function HomePage() {
             </SectionLabel>
             <SplitHeading id="process-title" lines={h.process.lines} emphasis={[1]} className="display-lg mt-8" />
           </div>
-          <div className="mx-auto mt-16 max-w-5xl md:mt-24">
+          <div className="mx-auto mt-12 max-w-5xl md:mt-16">
             <ProcessTimeline steps={getProcess(language)} />
           </div>
           <div className="mt-16 text-center">
@@ -193,7 +196,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section id="estimate" aria-labelledby="estimate-title" className="grid-paper bg-paper py-24 md:py-36">
+      <section id="estimate" aria-labelledby="estimate-title" className="grid-paper bg-paper py-20 md:py-28">
         <div className="container-x">
           <div className="grid gap-8 md:grid-cols-12 md:items-end">
             <div className="md:col-span-8">
@@ -214,7 +217,8 @@ export default async function HomePage() {
 
       <Testimonials testimonials={testimonials} number="09" />
 
-      <section aria-labelledby="faq-title" className="bg-ivory py-24 md:py-36">
+      <section aria-labelledby="faq-title" className="relative isolate bg-ivory py-20 md:py-28">
+        <div aria-hidden="true" data-reveal="guides" className="column-guides" />
         <div className="container-x grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <SectionLabel number="10">{h.faq.label}</SectionLabel>

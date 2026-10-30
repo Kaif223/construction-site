@@ -28,14 +28,13 @@ export function ServicesOverview({ items }: { items: ServiceCategory[] }) {
                 href={href(`/services/${item.slug}`)}
                 onMouseEnter={() => setActive(index)}
                 onFocus={() => setActive(index)}
-                data-cursor={dict.cursor.explore}
-                className="group grid grid-cols-[auto_1fr_auto] items-center gap-x-5 gap-y-4 py-6 md:gap-x-8 md:py-8"
+                className="group grid grid-cols-[auto_1fr_auto] items-center gap-x-5 gap-y-4 py-5 md:gap-x-8 md:py-6"
               >
                 <span className={`eyebrow transition-colors duration-500 ${isActive ? "text-orange" : "text-ivory-muted"}`}>
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className={`font-display text-[clamp(1.9rem,4.2vw,3.6rem)] leading-none transition-[color,transform] duration-700 ease-[var(--ease-out-expo)] lg:group-hover:translate-x-[calc(0.75rem*var(--dir))] ${
+                  className={`font-display text-[clamp(1.5rem,2.6vw,2.5rem)] leading-none font-medium transition-[color,transform] duration-700 ease-[var(--ease-out-expo)] lg:group-hover:translate-x-[calc(0.75rem*var(--dir))] ${
                     isActive ? "text-ivory" : "text-ivory/55 lg:text-ivory/45"
                   }`}
                 >

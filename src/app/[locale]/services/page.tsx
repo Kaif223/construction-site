@@ -106,7 +106,6 @@ export default async function ServicesPage() {
                       href={href(`/services/${category.slug}`)}
                       tabIndex={-1}
                       aria-hidden="true"
-                      data-cursor={dict.cursor.explore}
                       className={`group relative block aspect-[4/3] overflow-hidden bg-ivory-deep lg:col-span-4 ${index % 2 === 1 ? "lg:order-1" : ""}`}
                     >
                       <Image

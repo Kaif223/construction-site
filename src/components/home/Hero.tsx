@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { useScrollMotion } from "@/lib/gsap";
 import { useI18n } from "@/i18n/client";
+import { maskWords } from "@/components/ui/primitives";
 
 /** Staggers the CSS entrance animations defined in globals.css. */
 const order = (i: number) => ({ "--i": i }) as React.CSSProperties;
@@ -106,15 +107,9 @@ export function Hero() {
           {t.eyebrow}
         </p>
 
-        <h1 id="hero-title" data-hero="lines" className="display-hero">
-          {t.lines.map((line, index) => (
-            <span key={line} className="line-mask">
-              <span className={index === 1 ? "italic text-ivory/90" : undefined} style={order(index)}>
-                {line}
-                {index === 0 ? " " : null}
-              </span>
-            </span>
-          ))}
+        <h1 id="hero-title" data-hero="words" className="display-hero max-w-[16ch]">
+          <span className="block">{maskWords(t.lines[0]).nodes} </span>
+          <em className="block text-ivory/75">{maskWords(t.lines[1], maskWords(t.lines[0]).count).nodes}</em>
         </h1>
 
         <div className="mt-8 grid gap-8 md:mt-10 md:grid-cols-12 md:items-end">
@@ -122,7 +117,7 @@ export function Hero() {
             {t.copy}
           </p>
           <div data-hero="fade" style={order(3)} className="flex flex-col gap-3 xs:flex-row md:col-span-7 md:justify-end">
-            <Link href={href("/projects")} className="btn btn-primary" data-cursor={dict.cursor.explore}>
+            <Link href={href("/projects")} className="btn btn-primary">
               {t.explore} <ArrowRight aria-hidden="true" className="icon-dir h-4 w-4" />
             </Link>
             <Link href={href("/quote")} className="btn btn-ghost-light">
@@ -135,7 +130,7 @@ export function Hero() {
           data-hero="fade" style={order(4)}
           className="eyebrow mt-10 flex items-center justify-between border-t border-line-inverse pt-5 text-ivory/60"
         >
-          <a href="#introduction" className="group inline-flex items-center gap-3 text-ivory/80 hover:text-ivory">
+          <a href="#statements" className="group inline-flex items-center gap-3 text-ivory/80 hover:text-ivory">
             <span aria-hidden="true" className="relative block h-8 w-px overflow-hidden bg-ivory/20">
               <span className="scroll-cue absolute inset-0 bg-orange" />
             </span>

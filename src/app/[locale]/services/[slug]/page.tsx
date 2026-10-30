@@ -184,7 +184,6 @@ async function ServiceCategoryContent({ params }: { params: Promise<{ slug: stri
                         href={href(`/projects/${project.slug}`)}
                         statusLabel={dict.projects.status[project.status]}
                         categoryLabel={dict.projects.categories[project.category]}
-                        cursorLabel={dict.cursor.viewProject}
                         sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
                       />
                     </li>
