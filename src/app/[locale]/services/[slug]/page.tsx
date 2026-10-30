@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/services
         .map((service) => service.name)
         .join(language === "ar" ? "، " : ", "),
     }),
-    image: category.image,
-    imageAlt: category.imageAlt,
+    shareImagePath: `/services/${slug}`,
+    shareImageAlt: category.imageAlt,
   });
 }
 

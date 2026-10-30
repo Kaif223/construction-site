@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/projects
     path: `/projects/${slug}`,
     title: t(dict.meta.project.title, { name: project.name, type: project.type }),
     description: project.summary,
-    image: project.cover.src,
-    imageAlt: project.cover.alt,
+    shareImagePath: `/projects/${slug}`,
+    shareImageAlt: project.cover.alt,
   });
 }
 

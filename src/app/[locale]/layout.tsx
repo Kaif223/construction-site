@@ -44,10 +44,6 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(siteConfig.url),
     title: { default: dict.meta.home.title, template: `%s — ${siteConfig.name}` },
     applicationName: siteConfig.name,
-    openGraph: {
-      ...base.openGraph,
-      images: [{ url: "/images/hero/residence-dusk.jpg", width: 2400, height: 1600, alt: dict.hero.imageAlt }],
-    },
     twitter: { card: "summary_large_image" },
   };
 }
