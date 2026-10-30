@@ -108,7 +108,9 @@ export function SiteHeader() {
     };
   }, [menuOpen]);
 
-  const onLight = solid && !menuOpen;
+  // Every page now opens on a light surface, so the bar is always dark-on-light;
+  // it only gains a frosted background once the page scrolls.
+  const frosted = solid && !menuOpen;
 
   return (
     <>
@@ -116,8 +118,8 @@ export function SiteHeader() {
         className={`fixed inset-x-0 top-0 z-50 animate-[header-enter_0.9s_var(--ease-out-expo)_0.35s_both] transition-[transform,background-color,color,box-shadow] duration-500 ease-[var(--ease-out-expo)] ${
           hidden && !menuOpen ? "-translate-y-full" : ""
         } ${
-          onLight ? "bg-ivory/90 text-charcoal shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "bg-transparent text-ivory"
-        }`}
+          frosted ? "bg-ivory/85 shadow-[0_1px_0_var(--color-line)] backdrop-blur-md" : "bg-transparent"
+        } text-charcoal`}
       >
         <div className="container-x flex h-[var(--header-h)] items-center justify-between gap-4">
           <Link
@@ -148,7 +150,7 @@ export function SiteHeader() {
             <LanguageSwitch className="hidden sm:flex" />
             <Link
               href={href("/quote")}
-              className={`btn hidden min-h-11 px-5 text-sm sm:inline-flex ${onLight ? "btn-dark" : "btn-primary"}`}
+              className={`btn hidden min-h-11 px-5 text-sm sm:inline-flex ${frosted ? "btn-dark" : "btn-primary"}`}
             >
               {dict.common.requestQuote}
               <ArrowUpRight aria-hidden="true" className="icon-dir h-4 w-4" />
@@ -187,14 +189,14 @@ export function SiteHeader() {
         role="dialog"
         aria-modal="true"
         hidden={!menuOpen}
-        className="grid-paper-dark fixed inset-0 z-40 h-[100dvh] overflow-y-auto bg-charcoal pt-[var(--header-h)] text-ivory xl:hidden"
+        className="grid-paper fixed inset-0 z-40 h-[100dvh] overflow-y-auto bg-ivory pt-[var(--header-h)] text-charcoal xl:hidden"
       >
         <nav aria-label={dict.common.mobileNav} className="container-x flex min-h-full flex-col justify-between gap-10 pt-8 pb-10">
           <ul className="space-y-1">
             {mainNav.map((item, index) => (
               <li
                 key={item.href}
-                className="menu-item-enter border-b border-line-inverse"
+                className="menu-item-enter border-b border-line"
                 style={{ animationDelay: `${80 + index * 50}ms` }}
               >
                 <Link
@@ -204,7 +206,7 @@ export function SiteHeader() {
                   aria-current={isActive(pathname, href(item.href)) ? "page" : undefined}
                 >
                   {dict.nav[item.key]}
-                  <span className="eyebrow text-ivory-muted">0{index + 1}</span>
+                  <span className="eyebrow text-ink-muted">0{index + 1}</span>
                 </Link>
               </li>
             ))}
@@ -213,14 +215,14 @@ export function SiteHeader() {
             <Link href={href("/quote")} className="btn btn-primary w-full">
               {dict.common.requestQuote} <ArrowUpRight aria-hidden="true" className="icon-dir h-4 w-4" />
             </Link>
-            <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-ivory-muted">
+            <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-ink-muted">
               <Link href={href("/estimate")} className="link-line">
                 {dict.nav.estimate}
               </Link>
               <Link href={href("/faq")} className="link-line">
                 {dict.nav.faq}
               </Link>
-              <LanguageSwitch className="flex text-ivory" />
+              <LanguageSwitch className="flex text-charcoal" />
             </div>
           </div>
         </nav>

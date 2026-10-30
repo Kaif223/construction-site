@@ -9,10 +9,10 @@ import { BackToTop } from "@/components/layout/BackToTop";
 import { CopyrightYear } from "@/components/layout/CopyrightYear";
 
 function FooterHeading({ children, spaced = false }: { children: React.ReactNode; spaced?: boolean }) {
-  return <h2 className={`eyebrow mb-5 text-ivory-muted ${spaced ? "mt-10" : ""}`}>{children}</h2>;
+  return <h2 className={`eyebrow mb-5 text-ink-muted ${spaced ? "mt-10" : ""}`}>{children}</h2>;
 }
 
-const linkClass = "link-line text-ivory/85 hover:text-ivory";
+const linkClass = "link-line text-charcoal/80 hover:text-charcoal";
 
 export async function SiteFooter() {
   const { dict, href, language, market, l } = await getI18n();
@@ -21,21 +21,21 @@ export async function SiteFooter() {
   const draft = translationStatus[language].status === "draft";
 
   return (
-    <footer data-site-footer className="grain relative overflow-hidden bg-charcoal text-ivory">
+    <footer data-site-footer className="relative overflow-hidden border-t border-line bg-ivory-deep text-charcoal">
       {draft && dict.translation.draftNotice && (
-        <div role="note" className="border-b border-line-inverse bg-graphite">
-          <p className="container-x flex items-start gap-3 py-4 text-sm text-ivory/80">
-            <Info aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-orange" />
+        <div role="note" className="border-b border-line bg-ivory">
+          <p className="container-x flex items-start gap-3 py-4 text-sm text-charcoal/80">
+            <Info aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-orange-ink" />
             {dict.translation.draftNotice}
           </p>
         </div>
       )}
       <div className="container-x pt-20 pb-10 md:pt-28">
-        <div className="grid gap-12 border-b border-line-inverse pb-16 lg:grid-cols-12">
+        <div className="grid gap-12 border-b border-line pb-16 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Logo />
-            <p className="mt-6 max-w-md text-ivory/75">{dict.footer.description}</p>
-            <p className="eyebrow mt-6 text-ivory-muted">{dict.footer.market.replace("{market}", l(market.name))}</p>
+            <p className="mt-6 max-w-md text-ink-muted">{dict.footer.description}</p>
+            <p className="eyebrow mt-6 text-ink-muted">{dict.footer.market.replace("{market}", l(market.name))}</p>
             <Link href={href("/quote")} className="btn btn-primary mt-8">
               {dict.common.requestQuote} <ArrowUpRight aria-hidden="true" className="icon-dir h-4 w-4" />
             </Link>
@@ -78,7 +78,7 @@ export async function SiteFooter() {
             </div>
             <div>
               <FooterHeading>{dict.footer.contact}</FooterHeading>
-              <address className="space-y-2.5 text-sm not-italic text-ivory/85">
+              <address className="space-y-2.5 text-sm not-italic text-charcoal/80">
                 {contact.email && (
                   <p>
                     <a href={`mailto:${contact.email}`} className={`${linkClass} ltr-isolate`}>
@@ -91,7 +91,7 @@ export async function SiteFooter() {
               </address>
               <FooterHeading spaced>{dict.footer.hours}</FooterHeading>
               {contact.hours.length > 0 ? (
-                <dl className="space-y-1.5 text-sm text-ivory/85">
+                <dl className="space-y-1.5 text-sm text-charcoal/80">
                   {contact.hours.map((row) => (
                     <div key={row.days.en}>
                       <dt className="inline">{l(row.days)}: </dt>
@@ -100,7 +100,7 @@ export async function SiteFooter() {
                   ))}
                 </dl>
               ) : (
-                <p className="text-sm text-ivory/70">{dict.footer.hoursTbc}</p>
+                <p className="text-sm text-ink-muted">{dict.footer.hoursTbc}</p>
               )}
               <FooterHeading spaced>{dict.footer.social}</FooterHeading>
               {siteConfig.social.length > 0 ? (
@@ -114,20 +114,26 @@ export async function SiteFooter() {
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-ivory/60">{dict.footer.socialSoon}</p>
+                <p className="text-sm text-ink-muted">{dict.footer.socialSoon}</p>
               )}
             </div>
           </div>
         </div>
 
+        {/* Brand wordmark whose letters rise one after another as the footer comes into view. */}
         <p
           aria-hidden="true"
-          className="pointer-events-none mt-10 select-none font-display text-[clamp(4rem,19vw,19rem)] font-semibold leading-[0.8] tracking-[-0.03em] text-ivory/[0.07] [direction:ltr]"
+          data-reveal="lines"
+          className="pointer-events-none mt-10 flex select-none justify-between font-display text-[clamp(4rem,19vw,19rem)] font-semibold leading-[0.8] tracking-[-0.03em] text-charcoal/[0.08] [direction:ltr]"
         >
-          CONSTRUKT
+          {Array.from(siteConfig.name).map((letter, index) => (
+            <span key={index} className="word-mask">
+              <span style={{ "--i": index } as React.CSSProperties}>{letter}</span>
+            </span>
+          ))}
         </p>
 
-        <div className="mt-8 flex flex-col gap-6 text-xs text-ivory/60 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 flex flex-col gap-6 text-xs text-ink-muted md:flex-row md:items-center md:justify-between">
           <p>
             © <CopyrightYear /> {siteConfig.name} {dict.common.workingBrand}. {dict.footer.imagery}{" "}
             <Link href={href("/terms#imagery")} className="link-line">

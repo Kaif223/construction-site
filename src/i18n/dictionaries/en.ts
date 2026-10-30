@@ -152,23 +152,6 @@ export const en = {
   },
 
   home: {
-    statements: {
-      label: "What we stand for",
-      items: [
-        {
-          text: "One team carries your project from the first drawing to the final handover.",
-          imageAlt: "A site team in hard hats and high-visibility vests reviewing a reinforced concrete deck",
-        },
-        {
-          text: "Every stage is inspected and signed off before the next one begins.",
-          imageAlt: "Workers in hard hats fixing steel reinforcement on a rising concrete structure",
-        },
-        {
-          text: "Materials chosen for Gulf heat and sun, and installed to last.",
-          imageAlt: "A white contemporary villa with a swimming pool under a clear blue sky",
-        },
-      ],
-    },
     intro: {
       label: "Our philosophy",
       lines: ["Every Detail Matters.", "Every Structure", "Tells a Story."],

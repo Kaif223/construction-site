@@ -17,7 +17,7 @@ export async function BrandIntro() {
     <section id="introduction" aria-labelledby="intro-title" className="relative isolate bg-ivory py-20 md:py-28">
       <div aria-hidden="true" data-reveal="guides" className="column-guides" />
       <div className="container-x">
-        <SectionLabel number="01">{t.label}</SectionLabel>
+        <SectionLabel number="02">{t.label}</SectionLabel>
         <div className="mt-10 grid gap-14 lg:grid-cols-12 lg:gap-10">
           <SplitHeading id="intro-title" lines={t.lines} emphasis={[1]} className="display-xl lg:col-span-8" />
           <div className="self-end lg:col-span-4 lg:pb-3">

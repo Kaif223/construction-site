@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { Hero } from "@/components/home/Hero";
 import { BrandIntro } from "@/components/home/BrandIntro";
-import { StatementPanels } from "@/components/home/StatementPanels";
 import { ServicesOverview } from "@/components/home/ServicesOverview";
 import { FeaturedProjects } from "@/components/home/FeaturedProjects";
 import { ConstructionJourney } from "@/components/home/ConstructionJourney";
@@ -38,7 +37,42 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
-      <StatementPanels />
+
+      <section id="journey" aria-labelledby="journey-title" className="grid-paper bg-paper pt-20 text-charcoal md:pt-28">
+        <div className="container-x grid gap-8 md:grid-cols-12 md:items-end">
+          <div className="md:col-span-8">
+            <SectionLabel number="01">{h.journey.label}</SectionLabel>
+            <SplitHeading id="journey-title" lines={h.journey.lines} emphasis={[1]} className="display-xl mt-8" />
+          </div>
+          <p className="text-ink-muted md:col-span-4" data-reveal="up">
+            {h.journey.copy}
+          </p>
+        </div>
+        <div className="mt-10 md:mt-12">
+          <Suspense>
+            <ConstructionJourney stages={getJourney(language)} />
+          </Suspense>
+        </div>
+        <div className="container-x pt-20 pb-20 md:pb-28">
+          <div className="grid gap-8 md:grid-cols-12 md:items-end">
+            <h3 className="display-md md:col-span-6" data-reveal="up">
+              {h.journey.drawingTitle[0]} <span className="icon-dir inline-block text-orange-ink">→</span> {h.journey.drawingTitle[1]}
+            </h3>
+            <p className="text-ink-muted md:col-span-5 md:col-start-8" data-reveal="up">
+              {h.journey.drawingCopy}
+            </p>
+          </div>
+          <CompareSlider
+            className="mt-10"
+            initial={46}
+            label={t(dict.compare.label, { before: h.journey.drawing, after: h.journey.built })}
+            valueText={t(dict.compare.valueText, { before: h.journey.drawing })}
+            before={{ src: "/images/brand/residence-blueprint.jpg", alt: h.journey.drawingAlt, label: h.journey.drawing }}
+            after={{ src: "/images/hero/residence-dusk.jpg", alt: h.journey.builtAlt, label: h.journey.built }}
+          />
+        </div>
+      </section>
+
       <BrandIntro />
 
       <section aria-labelledby="services-title" className="grain relative isolate bg-charcoal py-20 text-ivory md:py-28">
@@ -46,7 +80,7 @@ export default async function HomePage() {
         <div className="container-x">
           <div className="grid gap-8 md:grid-cols-12 md:items-end">
             <div className="md:col-span-8">
-              <SectionLabel number="02" tone="light">
+              <SectionLabel number="03" tone="light">
                 {h.services.label}
               </SectionLabel>
               <SplitHeading id="services-title" lines={h.services.lines} emphasis={[1]} className="display-xl mt-8" />
@@ -69,7 +103,7 @@ export default async function HomePage() {
       <section aria-labelledby="projects-title" className="bg-ivory pt-20 md:pt-28">
         <div className="container-x grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
-            <SectionLabel number="03">{h.projects.label}</SectionLabel>
+            <SectionLabel number="04">{h.projects.label}</SectionLabel>
             <SplitHeading id="projects-title" lines={h.projects.lines} emphasis={[1]} className="display-xl mt-8" />
           </div>
           <div className="md:col-span-4" data-reveal="up">
@@ -86,42 +120,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section aria-labelledby="journey-title" className="bg-charcoal pt-20 text-ivory md:pt-28">
-        <div className="container-x grid gap-8 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
-            <SectionLabel number="04" tone="light">
-              {h.journey.label}
-            </SectionLabel>
-            <SplitHeading id="journey-title" lines={h.journey.lines} emphasis={[1]} className="display-xl mt-8" />
-          </div>
-          <p className="text-ivory/75 md:col-span-4" data-reveal="up">
-            {h.journey.copy}
-          </p>
-        </div>
-        <div className="mt-12 lg:mt-0">
-          <Suspense>
-            <ConstructionJourney stages={getJourney(language)} />
-          </Suspense>
-        </div>
-        <div className="container-x pt-20 pb-20 md:pb-28">
-          <div className="grid gap-8 md:grid-cols-12 md:items-end">
-            <h3 className="display-md md:col-span-6" data-reveal="up">
-              {h.journey.drawingTitle[0]} <span className="icon-dir inline-block text-orange">→</span> {h.journey.drawingTitle[1]}
-            </h3>
-            <p className="text-ivory/75 md:col-span-5 md:col-start-8" data-reveal="up">
-              {h.journey.drawingCopy}
-            </p>
-          </div>
-          <CompareSlider
-            className="mt-10"
-            initial={46}
-            label={t(dict.compare.label, { before: h.journey.drawing, after: h.journey.built })}
-            valueText={t(dict.compare.valueText, { before: h.journey.drawing })}
-            before={{ src: "/images/brand/residence-blueprint.jpg", alt: h.journey.drawingAlt, label: h.journey.drawing }}
-            after={{ src: "/images/hero/residence-dusk.jpg", alt: h.journey.builtAlt, label: h.journey.built }}
-          />
-        </div>
-      </section>
 
       <section aria-labelledby="why-title" className="relative isolate bg-ivory py-20 md:py-28">
         <div aria-hidden="true" data-reveal="guides" className="column-guides" />

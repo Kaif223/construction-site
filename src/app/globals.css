@@ -52,7 +52,7 @@
 
 @layer base {
   html {
-    background: var(--color-charcoal);
+    background: var(--color-ivory);
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: calc(var(--header-h) + 1rem);
   }
@@ -637,6 +637,49 @@
   clip-path: inset(0 0 0 0);
 }
 
+/* Construction drawing (BuildDrawing) ----------------------------------
+ * One custom property, --s (0 = empty plot … 9 = handed over), drives the
+ * whole drawing. Each element works out its own progress --k from the stage
+ * it belongs to (--l), where in that stage it starts (--d) and how much of
+ * the stage it takes (--len). Without motion the house is shown complete
+ * until the journey component sets --s for the selected stage. */
+.build {
+  --s: 9;
+}
+.motion-ready .build {
+  --s: 0;
+}
+.build path {
+  vector-effect: non-scaling-stroke;
+}
+.build :is(.draw, .fill, .pop) {
+  --k: clamp(0, calc((var(--s) - var(--l, 0) - var(--d, 0)) / var(--len, 1)), 1);
+}
+.build .draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--k));
+}
+.build .fill {
+  opacity: var(--k);
+}
+.build .pop {
+  opacity: var(--k);
+  transform: translateY(calc((1 - var(--k)) * -18px));
+}
+/* Gone again once --s passes --until: services behind plaster, the crane at handover. */
+.build .conceal {
+  opacity: calc(1 - clamp(0, calc((var(--s) - var(--until, 99)) / 0.6), 1));
+}
+/* The crane trolley carries its beam across the jib while the frame goes up. */
+.build .trolley {
+  transform: translateX(calc(clamp(0, calc((var(--s) - 1.8) / 1.4), 1) * -230px));
+}
+
+/* Stage text swapping in as the journey advances. */
+.motion-ready .stage-swap {
+  animation: fade-up 0.6s var(--ease-out-expo) both;
+}
+
 /* Hero entrance: pure CSS so it starts at first paint, before hydration. */
 /* A charcoal frame shrinks away from the image. The image itself is never
    clipped, so it is painted (and counted for LCP) as soon as it loads. */
@@ -647,8 +690,13 @@
   display: block;
   position: absolute;
   inset: 0;
-  box-shadow: 0 0 0 100vmax var(--color-charcoal);
-  animation: hero-window 1.6s var(--ease-arch) both;
+  box-shadow: 0 0 0 100vmax var(--color-ivory);
+  animation: hero-window 1.7s var(--ease-arch) 0.3s both;
+}
+/* The hero photograph is inset to the page margins; on large screens the
+   Hero component widens it to full bleed as the page scrolls. */
+.hero-frame {
+  clip-path: inset(0 var(--gutter));
 }
 .motion-ready [data-hero-zoom] {
   animation: hero-zoom 2.4s var(--ease-out-expo) both;
@@ -656,18 +704,18 @@
 .motion-ready [data-hero="words"] .word-mask > span {
   transform-origin: 0 100%;
   animation: word-up 1.2s var(--ease-out-expo) both;
-  animation-delay: calc(0.7s + var(--i, 0) * 70ms);
+  animation-delay: calc(0.15s + var(--i, 0) * 70ms);
 }
 [dir="rtl"].motion-ready [data-hero="words"] .word-mask > span {
   transform-origin: 100% 100%;
 }
 .motion-ready [data-hero="fade"] {
   animation: fade-up 0.7s var(--ease-out-expo) both;
-  animation-delay: calc(1.05s + var(--i, 0) * 80ms);
+  animation-delay: calc(0.45s + var(--i, 0) * 80ms);
 }
 .motion-ready [data-hero="draw"] {
   animation: draw 1.4s var(--ease-arch) both;
-  animation-delay: calc(0.15s + var(--i, 0) * 80ms);
+  animation-delay: calc(1.3s + var(--i, 0) * 80ms);
 }
 
 @keyframes hero-window {

@@ -24,18 +24,18 @@ export async function Breadcrumbs({ items }: { items: Crumb[] }) {
 
   return (
     <nav aria-label={dict.common.breadcrumb}>
-      <ol className="eyebrow flex flex-wrap items-center gap-x-3 gap-y-1 text-ivory/70">
+      <ol className="eyebrow flex flex-wrap items-center gap-x-3 gap-y-1 text-ink-muted">
         {trail.map((item, index) => {
           const last = index === trail.length - 1;
           return (
             <li key={item.href} className="flex items-center gap-3">
               {last ? (
-                <span aria-current="page" className="text-ivory">
+                <span aria-current="page" className="text-charcoal">
                   {item.label}
                 </span>
               ) : (
                 <>
-                  <Link href={item.href} className="link-line hover:text-ivory">
+                  <Link href={item.href} className="link-line hover:text-charcoal">
                     {item.label}
                   </Link>
                   <span aria-hidden="true" className="rtl:-scale-x-100">

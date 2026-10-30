@@ -19,22 +19,22 @@ export default async function NotFound() {
   ];
 
   return (
-    <section className="grid-paper-dark grain relative flex min-h-[100svh] items-center bg-charcoal text-ivory">
+    <section className="grid-paper relative flex min-h-[100svh] items-center bg-paper text-charcoal">
       <div className="container-x pt-[var(--header-h)]">
-        <p className="eyebrow text-orange">{n.eyebrow}</p>
+        <p className="eyebrow text-orange-ink">{n.eyebrow}</p>
         <h1 className="display-hero mt-6">
           {n.lines[0]}
           <br />
           <em>{n.lines[1]}</em>
         </h1>
-        <p className="lede mt-8 max-w-xl text-ivory/75">{n.body}</p>
+        <p className="lede mt-8 max-w-xl text-ink-muted">{n.body}</p>
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <ButtonLink href={href("/")}>{n.back}</ButtonLink>
         </div>
-        <ul className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-line-inverse pt-6 text-sm">
+        <ul className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-line pt-6 text-sm">
           {links.map((link) => (
             <li key={link.href}>
-              <Link href={href(link.href)} className="link-line text-ivory/80 hover:text-ivory">
+              <Link href={href(link.href)} className="link-line text-charcoal/80 hover:text-charcoal">
                 {link.label}
               </Link>
             </li>

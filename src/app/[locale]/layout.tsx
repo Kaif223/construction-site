@@ -52,7 +52,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const viewport: Viewport = { themeColor: "#171918" };
+export const viewport: Viewport = { themeColor: "#f5f2eb" };
 
 /**
  * Runs before first paint. Hidden "pre-animation" states only apply when this

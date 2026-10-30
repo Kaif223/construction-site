@@ -66,29 +66,32 @@ async function ProjectContent({ params }: { params: Promise<{ slug: string }> })
 
   return (
     <>
-      <section aria-labelledby="project-title" className="grain relative isolate overflow-hidden bg-charcoal text-ivory">
-        <div className="absolute inset-0 -z-10">
-          <div data-parallax="0.08" className="absolute inset-x-0 -inset-y-[10%]">
-            <Image src={project.cover.src} alt={project.cover.alt} fill preload sizes="100vw" className="object-cover" />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-charcoal/50" />
-        </div>
-        <div className="container-x flex min-h-[88svh] flex-col justify-between pt-[calc(var(--header-h)+3.5rem)] pb-12 md:pt-[calc(var(--header-h)+5rem)]">
+      <section aria-labelledby="project-title" className="bg-ivory text-charcoal">
+        <div className="container-x pt-[calc(var(--header-h)+2.5rem)] md:pt-[calc(var(--header-h)+4rem)]">
           <Breadcrumbs
             items={[
               { label: dict.nav.projects, href: "/projects" },
               { label: project.name, href: `/projects/${project.slug}` },
             ]}
           />
-          <div>
-            <div className="flex flex-wrap items-center gap-4" data-reveal="fade">
-              <span className="eyebrow ltr-isolate text-orange">{project.number}</span>
-              {project.status === "concept" && <ConceptBadge tone="light" label={dict.common.conceptProject} />}
+          <div className="mt-10 grid gap-8 md:mt-14 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <div className="flex flex-wrap items-center gap-4" data-reveal="fade">
+                <span className="eyebrow ltr-isolate text-orange-ink">{project.number}</span>
+                {project.status === "concept" && <ConceptBadge label={dict.common.conceptProject} />}
+              </div>
+              <SplitHeading as="h1" id="project-title" lines={[project.name]} className="display-xl mt-6 max-w-[14ch]" />
             </div>
-            <SplitHeading as="h1" id="project-title" lines={[project.name]} className="display-xl mt-6 max-w-[14ch]" />
-            <p className="lede mt-6 max-w-2xl text-ivory/80" data-reveal="up">
+            <p className="lede max-w-2xl text-ink-muted lg:col-span-5" data-reveal="up">
               {project.summary}
             </p>
+          </div>
+        </div>
+        <div className="container-x mt-10 md:mt-14">
+          <div className="relative h-[clamp(18rem,62svh,46rem)] overflow-hidden bg-ivory-deep">
+            <div data-parallax="0.08" className="absolute inset-x-0 -inset-y-[10%]">
+              <Image src={project.cover.src} alt={project.cover.alt} fill preload sizes="100vw" className="object-cover" />
+            </div>
           </div>
         </div>
       </section>
